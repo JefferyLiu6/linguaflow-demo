@@ -64,22 +64,7 @@ export function Nav() {
       >
         {/* Wordmark */}
         <Link href="/" className="flex items-center gap-4 no-underline">
-          <div className="flex items-center gap-2">
-            <svg
-              width="24" height="24" viewBox="0 0 24 24"
-              fill="currentColor" aria-hidden="true"
-              className="text-[#2DD4BF] shrink-0"
-            >
-              <rect x="1"  y="14" width="3" height="6"  rx="1" />
-              <rect x="6"  y="9"  width="3" height="11" rx="1" />
-              <rect x="11" y="4"  width="3" height="16" rx="1" />
-              <rect x="16" y="7"  width="3" height="13" rx="1" />
-              <rect x="21" y="12" width="3" height="8"  rx="1" />
-            </svg>
-            <span className="text-xl font-display font-bold text-gray-900 tracking-tighter">
-              LinguaFlow
-            </span>
-          </div>
+          <img src="/wordmark.png" alt="LinguaFlow" className="shrink-0 h-9 w-auto" />
         </Link>
 
         {/* Nav links */}
