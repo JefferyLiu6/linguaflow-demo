@@ -55,29 +55,29 @@ The repo also retains a Prisma schema from an earlier iteration, but that persis
 
 ```mermaid
 flowchart LR
-  subgraph browser [Browser]
+  subgraph browser["Browser"]
     UI[Next.js App Router + React]
   end
 
-  subgraph next [Next.js Server]
+  subgraph next["Next.js Server"]
     API[Route Handlers /api/*]
     DEMO[Demo Session Cookie + Rate Limits]
   end
 
-  subgraph browserdata [Browser Storage]
+  subgraph browserdata["Browser Storage"]
     LS[localStorage\nsessions · language · custom list]
   end
 
-  subgraph refdata [Reference Layer (inactive in demo)]
+  subgraph refdata["Reference Layer: inactive in demo"]
     DB[(Prisma Schema)]
   end
 
-  subgraph agent [LinguaFlow Agent — Optional]
+  subgraph agent["LinguaFlow Agent: Optional"]
     FASTAPI[FastAPI Service :8000]
     GEN[Generation Endpoint /generate]
     TUTOR_API[Tutor Endpoint /tutor]
     TUTOR_STREAM["Tutor Stream /tutor/stream (SSE)"]
-    subgraph tutor [Tutor Graph — LangGraph]
+    subgraph tutor["Tutor Graph: LangGraph"]
       ROUTER[Router Node]
       HINT[Hint]
       SOCRATIC[Socratic]
