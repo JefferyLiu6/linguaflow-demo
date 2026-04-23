@@ -9,12 +9,12 @@
 [![pnpm](https://img.shields.io/badge/pnpm-package%20manager-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-> **Live demo:** _coming soon_ · [Walkthrough video](#) _(placeholder)_
+> **Live demo:** https://linguaflow-demo.vercel.app · [Walkthrough video](#) _(placeholder)_
 
-Try it out: https://linguaflow-demo.vercel.app 
+Try it out: https://linguaflow-demo.vercel.app
 
-A full-stack language learning platform that combines timed drills, route-aware AI coaching, and persistent learner progress.
-It is built as a product-style system, not a chatbot demo, with explicit architecture boundaries, guardrails, and reliability checks.
+LinguaFlow is a product-style language learning demo that combines timed drills, route-aware AI coaching, and progress tracking.
+The current public checkout runs in demo mode: learner progress, language preference, and custom lists are stored in the browser, while the optional Python agent powers drill generation and tutoring.
 
 ## Key Highlights
 
@@ -22,6 +22,13 @@ It is built as a product-style system, not a chatbot demo, with explicit archite
 - **AI architecture**: FastAPI agent + LangGraph routing + deterministic JSON handling.
 - **System design**: typed Next.js <-> Python API bridge with clear service boundaries.
 - **Engineering quality**: CI checks for lint, type safety, tests, build, and Python syntax.
+
+## Current Demo Mode
+
+- **No account required**: auth is disabled in this public demo checkout.
+- **Per-browser progress**: sessions, selected language, and custom drill lists are stored in `localStorage`.
+- **Optional AI backend**: `/api/generate-drills` and `/api/tutor*` proxy to the Python agent when it is running.
+- **Prisma schema retained for reference**: the repo still includes the earlier Prisma data model, but the current demo build does not use it at runtime.
 
 ## Screenshots
 
@@ -39,8 +46,8 @@ It is built as a product-style system, not a chatbot demo, with explicit archite
 
 ## System Architecture
 
-LinguaFlow is split into three layers: a Next.js app for UI and authenticated web routes, a Prisma-backed persistence layer for user/session data, and a FastAPI AI service for drill generation and tutoring.
-The web layer owns auth and API contracts, while the agent layer owns model interaction, routing, and tutor/generation behavior.
+LinguaFlow is split into two active runtime layers plus one dormant reference layer: a Next.js app for UI and route handlers, browser-side demo persistence via `localStorage`, and an optional FastAPI AI service for drill generation and tutoring.
+The repo also retains a Prisma schema from an earlier iteration, but that persistence layer is not active in the current public demo build.
 
 ```mermaid
 flowchart LR
@@ -50,11 +57,15 @@ flowchart LR
 
   subgraph next [Next.js Server]
     API[Route Handlers /api/*]
-    AUTH[JWT Cookie Auth]
+    DEMO[Demo Session Cookie + Rate Limits]
   end
 
-  subgraph data [Persistence]
-    DB[(SQLite via Prisma)]
+  subgraph browserdata [Browser Storage]
+    LS[localStorage\nsessions · language · custom list]
+  end
+
+  subgraph refdata [Reference Layer (inactive in demo)]
+    DB[(Prisma Schema)]
   end
 
   subgraph agent [LinguaFlow Agent — Optional]
@@ -74,8 +85,8 @@ flowchart LR
   end
 
   UI --> API
-  API --> AUTH
-  API --> DB
+  UI --> LS
+  API --> DEMO
   API -->|/api/generate-drills| FASTAPI
   API -->|/api/tutor| FASTAPI
   API -->|/api/tutor/stream| FASTAPI
@@ -97,6 +108,8 @@ flowchart LR
 ```
 
 ## Iteration History
+
+Note: the iteration history below includes earlier auth and Prisma-backed persistence work. The current public demo checkout ships with those pieces stubbed out so the app can run as a lightweight browser-first demo.
 
 ### v1 — Timing + Feedback Loop First
 - **What changed:** Implemented the strict core loop (20s timer, submit/skip/timeout paths, immediate feedback, session scoring).
@@ -133,10 +146,10 @@ flowchart LR
 - **Core drills**: translation, substitution, transformation
 - **Languages**: Spanish, French, German, Chinese, Japanese, Korean, English
 - **User flows**:
-  - Register/login with JWT cookie session
   - Run timed drills and receive immediate feedback
-  - Track performance on a personal dashboard
+  - Track performance on a per-browser dashboard
   - Browse full drill library by language/topic/category
+  - Build a custom list by upload or AI generation
 - **Optional AI capabilities**:
   - Generate custom drills via local Ollama model
   - Ask AI tutor for hints, explanations, clarifications, and readiness checks
@@ -148,22 +161,22 @@ flowchart LR
 | Frontend | Next.js 16, React 19, Tailwind CSS 4 |
 | Backend (Web) | Next.js Route Handlers, TypeScript |
 | Backend (AI) | FastAPI, LangGraph, OpenAI / Anthropic / Google / Groq / Ollama support |
-| Data | Prisma 7, SQLite (`@prisma/adapter-libsql`) |
-| Auth | `jose` (HS256 JWT in httpOnly cookie), `bcryptjs` |
-| Testing | Vitest (unit + integration) |
+| Data | Browser `localStorage` in the current demo; Prisma schema retained in repo as inactive reference |
+| Auth | Disabled in the current demo; demo session cookie is used only for AI rate limiting |
+| Testing | Vitest unit tests plus route-level integration tests for the web API layer |
 | CI | GitHub Actions (`lint`, `tsc`, `test`, `build`, Python `py_compile`) |
 
-## Production Profile
+## Runtime Profile
 
-For local development, LinguaFlow runs with SQLite and optional local Ollama inference.
+For local development and the public demo, LinguaFlow runs without database-backed auth or persistence. The web app stores learner state in the browser, and AI features are available when the optional Python agent is running.
 
-For deployment, the intended production profile is:
+The intended future production profile is:
 - Next.js frontend/web API on Vercel
 - FastAPI agent on Render
 - Postgres via Prisma
 - Hosted LLM provider for reliable inference
 
-This keeps the local setup lightweight while preserving a clear migration path to an internet-facing production architecture.
+This keeps the demo lightweight while preserving a clear migration path to an internet-facing production architecture.
 
 ## Model Strategy
 
@@ -200,14 +213,14 @@ The tutor service uses a router-plus-specialists graph:
 - each specialist applies route-specific prompting policy
 - guardrails enforce turn limits and stable fallback behavior
 
-### 3) Security and session model
-- Login issues a signed JWT in an `httpOnly` cookie with `SameSite=Lax`
-- Protected app routes are enforced by `proxy.ts`
-- Data routes require authenticated session; AI routes are restricted in production mode
+### 3) Demo session and guardrails
+- The public demo does not require login; app routes are intentionally open
+- A lightweight demo session cookie scopes AI-facing rate limits per browser
+- AI routes use per-session, per-IP, and optional global daily caps to protect usage
 
 ### 4) Reliability workflow
-- Unit tests for auth and drill logic
-- Integration tests for auth flow and per-user session isolation
+- Unit tests for drill normalization, answer checking, item selection, and stat aggregation
+- Route-level integration tests for demo reset, drill generation proxying, and tutor proxying
 - CI pipeline validates code health before merge
 
 ## Agent System Design
@@ -283,26 +296,26 @@ flowchart TD
 
 | Method | Path | Purpose | Auth |
 |---|---|---|---|
-| POST | `/api/register` | Create user account | No |
-| POST | `/api/auth/login` | Sign in and set cookie | No |
-| POST | `/api/auth/logout` | Clear cookie | Cookie |
-| GET | `/api/auth/me` | Return current session | Cookie |
-| GET/POST | `/api/sessions` | Load/save drill sessions | Yes |
-| GET/PUT | `/api/custom-list` | Load/save custom drills | Yes |
-| GET/PUT | `/api/language` | Load/save preferred language | Yes |
-| POST | `/api/generate-drills` | Proxy to Python generation endpoint | Dev open / Prod guarded |
-| POST | `/api/tutor` | Proxy to Python tutor endpoint | Dev open / Prod guarded |
-| POST | `/api/tutor/stream` | Proxy to Python SSE tutor stream endpoint | Dev open / Prod guarded |
+| POST | `/api/register` | Demo stub retained for compatibility | No-op in demo |
+| POST | `/api/auth/login` | Demo stub retained for compatibility | No-op in demo |
+| POST | `/api/auth/logout` | Demo stub retained for compatibility | No-op in demo |
+| GET | `/api/auth/me` | Demo stub retained for compatibility | No-op in demo |
+| GET/POST | `/api/sessions` | Demo stub; client state lives in `localStorage` | Not used by current UI |
+| GET/PUT | `/api/custom-list` | Demo stub; client state lives in `localStorage` | Not used by current UI |
+| GET/PUT | `/api/language` | Demo stub; client state lives in `localStorage` | Not used by current UI |
+| POST | `/api/generate-drills` | Proxy to Python generation endpoint with demo rate limits | Open |
+| POST | `/api/tutor` | Proxy to Python tutor endpoint with demo rate limits | Open |
+| POST | `/api/tutor/stream` | Proxy to Python SSE tutor stream endpoint with demo rate limits | Open |
 
 ## Data Model
 
-Prisma schema includes:
+The repo still contains a Prisma schema from an earlier iteration. It includes:
 - `User` (identity + credentials)
 - `DrillSession` (session performance + serialized results)
 - `CustomList` (user-generated drill sets)
 - `UserSettings` (preferences such as language)
 
-SQLite is used for local-first simplicity; migration path to Postgres is straightforward by changing Prisma provider and running migrations.
+That schema is currently inactive in the public demo build. Today, learner state is stored in browser `localStorage`; re-enabling Prisma remains a future migration path.
 
 ## Local Development
 
@@ -315,14 +328,14 @@ SQLite is used for local-first simplicity; migration path to Postgres is straigh
 ### 1) Install and run the web app
 
 ```bash
-cd fsi-2026-demo
+cd linguaflow-demo
 pnpm install
-npx prisma generate
-npx prisma db push
 pnpm dev
 ```
 
 Open `http://localhost:3000`.
+
+The current demo web app does not require a database or login setup.
 
 ### 2) Run optional AI agent
 
@@ -336,7 +349,7 @@ ollama pull llama3.1
 Terminal B:
 
 ```bash
-cd fsi-2026-demo/agent
+cd linguaflow-demo/agent
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -355,9 +368,10 @@ Create `.env.local` from `.env.example`.
 
 | Variable | Required | Description |
 |---|---|---|
-| `DATABASE_URL` | Yes | Prisma database URL (for SQLite: `file:./prisma/dev.db`) |
-| `JWT_SECRET` | Yes | Secret for signing JWT cookies |
 | `AGENT_URL` | No | Python agent base URL (default `http://localhost:8000`) |
+| `DEMO_AI_*` / `DEMO_GEN_*` / `DEMO_TUTOR_*` | No | Optional demo rate-limit overrides for AI endpoints |
+| `DATABASE_URL` | No | Reserved for inactive Prisma scaffolding in this checkout |
+| `JWT_SECRET` | No | Reserved for inactive auth scaffolding in this checkout |
 
 ## Scripts
 
@@ -372,7 +386,7 @@ Create `.env.local` from `.env.example`.
 
 ## Quality and CI
 
-- Test files live under `__tests__/` (unit + integration coverage)
+- Test files currently live in `lib/*.test.ts` and `app/api/**/*.test.ts`
 - CI workflow in `.github/workflows/ci.yml` runs:
   - `pnpm lint`
   - `npx tsc --noEmit`
@@ -382,23 +396,24 @@ Create `.env.local` from `.env.example`.
 
 ## Production Notes
 
-- Rotate `JWT_SECRET` carefully (rotation invalidates existing sessions)
-- Serve over HTTPS so secure cookies are active in production
-- Add rate limiting and auth hardening around AI-heavy routes for internet-facing deployments
-- For multi-instance deployments, migrate from SQLite to Postgres
+- If auth is re-enabled, rotate `JWT_SECRET` carefully and serve over HTTPS
+- Add stronger auth and abuse controls around AI-heavy routes for internet-facing deployments
+- Re-enable server-backed persistence before treating learner history as durable data
+- For multi-instance deployments, migrate the dormant Prisma layer to Postgres
 
 ## Current Limitations
 
 - AI features depend on local Ollama availability unless replaced with hosted inference
-- SQLite is optimized for local/single-node usage
-- Tutor/generation endpoints currently prioritize local development ergonomics
+- Auth and Prisma-backed persistence are disabled in the current public demo checkout
+- Learner progress is per-browser and can be cleared with local storage reset
+- Tutor/generation endpoints currently prioritize demo ergonomics over hardened production policy
 
 ## Roadmap
 
 - Add end-to-end tests for critical user flows
 - Add observability (request tracing and endpoint latency dashboards)
 - Add model routing/fallback policies for AI endpoints
-- Introduce migration-backed Postgres production profile
+- Re-enable database-backed auth and persistence on top of the retained Prisma schema
 - Publish demo deployment and walkthrough video
 
 ## License
