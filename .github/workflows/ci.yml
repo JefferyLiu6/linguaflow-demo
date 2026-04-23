@@ -7,7 +7,7 @@ on:
 
 jobs:
   node:
-    name: Lint · Type-check · Build
+    name: Lint · Type-check · Test · Build
     runs-on: ubuntu-latest
 
     steps:
@@ -25,17 +25,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Generate Prisma client
-        run: npx prisma generate
-
       - name: Lint
         run: pnpm lint
 
       - name: Type-check
         run: npx tsc --noEmit
 
-      - name: Test if configured
-        run: pnpm run --if-present test
+      - name: Test
+        run: pnpm test
 
       - name: Build
         run: pnpm build
