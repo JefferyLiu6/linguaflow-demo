@@ -104,7 +104,7 @@ export default function LibraryClient() {
 
         {/* Summary bar */}
         <div className="grid grid-cols-4 gap-3" style={{ marginBottom: 40 }}>
-          {[...LANGS, null].map((lang, i) => {
+          {[...LANGS, null].map((lang) => {
             if (lang === null) {
               return (
                 <div key="custom" className="bg-white border border-gray-200 rounded-md shadow-sm" style={{ padding: '18px 24px', borderTop: '3px solid var(--surface-3)' }}>

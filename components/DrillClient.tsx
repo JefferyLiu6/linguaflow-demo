@@ -147,13 +147,6 @@ export default function DrillClient({ initialType = 'sentence', initialCount = 1
     }
   }
 
-  const confirmGeneratedDrills = () => {
-    setCustomItems(genPreview)
-    setCustomFileName(`AI · ${genPreview.length} drills`)
-    setGenPreview([])
-    setGenError('')
-  }
-
   // Session
   const [items,     setItems]     = useState<DrillItem[]>([])
   const [index,     setIndex]     = useState(0)

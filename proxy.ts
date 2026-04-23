@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
 
 // Demo mode — all routes are publicly accessible, no auth required
-export function proxy(_req: NextRequest) {
+export function proxy() {
   return NextResponse.next()
 }
 

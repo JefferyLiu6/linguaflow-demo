@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
@@ -64,7 +65,13 @@ export function Nav() {
       >
         {/* Wordmark */}
         <Link href="/" className="flex items-center gap-4 no-underline">
-          <img src="/wordmark.png" alt="LinguaFlow" className="shrink-0 h-9 w-auto" />
+          <Image
+            src="/wordmark.png"
+            alt="LinguaFlow"
+            width={190}
+            height={36}
+            className="shrink-0 h-9 w-auto"
+          />
         </Link>
 
         {/* Nav links */}
