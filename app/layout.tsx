@@ -34,15 +34,6 @@ export const metadata: Metadata = {
 const demoRefreshResetScript = `
 (() => {
   try {
-    const navEntry = typeof performance.getEntriesByType === 'function'
-      ? performance.getEntriesByType('navigation')[0]
-      : null;
-    const navType = navEntry && typeof navEntry === 'object' && 'type' in navEntry
-      ? navEntry.type
-      : (performance.navigation && performance.navigation.type === 1 ? 'reload' : 'navigate');
-
-    if (navType !== 'reload') return;
-
     localStorage.removeItem('linguaflow_demo_sessions');
     localStorage.removeItem('linguaflow_demo_language');
     localStorage.removeItem('linguaflow_demo_custom_list');

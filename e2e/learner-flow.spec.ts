@@ -1,4 +1,4 @@
-import { expect, test } from 'playwright/test'
+import { expect, test, type BrowserContext } from 'playwright/test'
 import { getDB } from '../lib/drills'
 
 const spanishPhraseAnswers = new Map(
@@ -6,6 +6,11 @@ const spanishPhraseAnswers = new Map(
     .filter(item => item.category === 'phrase')
     .map(item => [item.prompt, item.answer]),
 )
+
+async function getDemoCookieValue(context: BrowserContext) {
+  const cookies = await context.cookies()
+  return cookies.find(cookie => cookie.name === 'linguaflow_demo_sid')?.value
+}
 
 test.describe('learner flow', () => {
   test.beforeEach(async ({ context, page }) => {
@@ -18,6 +23,9 @@ test.describe('learner flow', () => {
 
   test('completes a built-in session, records the result, and clears demo state on refresh', async ({ page }) => {
     await page.goto('/')
+
+    const initialDemoCookie = await getDemoCookieValue(page.context())
+    expect(initialDemoCookie).toBeTruthy()
 
     await page.locator('main').getByRole('link', { name: 'Begin Training' }).first().click()
     await expect(page.getByRole('heading', { name: 'New Session' })).toBeVisible()
@@ -73,5 +81,9 @@ test.describe('learner flow', () => {
     )
 
     expect(sessionsAfterReload).toHaveLength(0)
+
+    const rotatedDemoCookie = await getDemoCookieValue(page.context())
+    expect(rotatedDemoCookie).toBeTruthy()
+    expect(rotatedDemoCookie).not.toBe(initialDemoCookie)
   })
 })

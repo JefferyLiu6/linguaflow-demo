@@ -27,7 +27,7 @@ The current public checkout runs in demo mode: learner progress, language prefer
 
 - **No account required**: auth is disabled in this public demo checkout.
 - **Per-browser progress**: sessions, selected language, and custom drill lists are stored in `localStorage`.
-- **Hard refresh resets demo state**: reloading the page clears stored sessions, language preference, and custom lists so each demo run starts clean.
+- **Every fresh page load resets demo state**: opening or reloading the app clears stored sessions, language preference, and custom lists so each demo run starts clean.
 - **Optional AI backend**: `/api/generate-drills` and `/api/tutor*` proxy to the Python agent when it is running.
 - **Prisma schema retained for reference**: the repo still includes the earlier Prisma data model, but the current demo build does not use it at runtime.
 
