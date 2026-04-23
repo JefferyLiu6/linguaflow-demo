@@ -431,6 +431,7 @@ export default function DrillClient({ initialType = 'sentence', initialCount = 1
                   <button
                     key={code}
                     onClick={() => { setLanguage(code); saveLanguage(code) }}
+                    aria-label={`Select ${info.name}`}
                     className={`flex items-center rounded-md transition-all duration-150 cursor-pointer text-left ${
                       active
                         ? 'bg-white border border-gray-200 ring-2 ring-inset ring-gray-900 shadow-sm'
@@ -473,6 +474,7 @@ export default function DrillClient({ initialType = 'sentence', initialCount = 1
                   <button
                     key={t}
                     onClick={() => setDrillType(t)}
+                    aria-label={`Select ${label} mode`}
                     className={`rounded-md transition-all duration-150 cursor-pointer text-left ${
                       drillType === t
                         ? 'bg-white border border-gray-200 ring-2 ring-inset ring-gray-900 shadow-sm'
@@ -887,6 +889,7 @@ export default function DrillClient({ initialType = 'sentence', initialCount = 1
             <div className="flex border border-gray-200 rounded-md overflow-hidden bg-white shadow-sm">
               <button
                 onClick={() => setCount(c => Math.max(useCustom ? 1 : 4, c - 1))}
+                aria-label="Decrease item count"
                 className="px-5 py-3 hover:bg-gray-50 text-gray-500 transition-colors cursor-pointer"
                 style={{ border: 'none', fontSize: '1.125rem', fontFamily: 'var(--font-manrope)', lineHeight: 1 }}
               >
@@ -905,6 +908,7 @@ export default function DrillClient({ initialType = 'sentence', initialCount = 1
               </span>
               <button
                 onClick={() => setCount(c => Math.min(maxCount, c + 1))}
+                aria-label="Increase item count"
                 className="px-5 py-3 hover:bg-gray-50 text-gray-500 transition-colors cursor-pointer"
                 style={{ border: 'none', fontSize: '1.125rem', fontFamily: 'var(--font-manrope)', lineHeight: 1 }}
               >
@@ -917,6 +921,7 @@ export default function DrillClient({ initialType = 'sentence', initialCount = 1
           <button
             onClick={startSession}
             disabled={useCustom && customItems.length === 0 && genPreview.length === 0}
+            data-testid="begin-session"
             style={{
               width: '100%',
               background: useCustom && customItems.length === 0 && genPreview.length === 0 ? 'var(--surface-2)' : 'var(--text-1)',
@@ -1057,6 +1062,7 @@ export default function DrillClient({ initialType = 'sentence', initialCount = 1
             Prompt
           </div>
           <div
+            data-testid="drill-prompt"
             style={{
               fontFamily: 'var(--font-jetbrains), monospace',
               fontSize: 'clamp(1.375rem, 3vw, 2rem)',
@@ -1112,6 +1118,7 @@ export default function DrillClient({ initialType = 'sentence', initialCount = 1
           <input
             ref={inputRef}
             type="text"
+            aria-label="Response"
             value={inputVal}
             onChange={e => setInputVal(e.target.value)}
             disabled={submitted}
@@ -1182,6 +1189,7 @@ export default function DrillClient({ initialType = 'sentence', initialCount = 1
         {/* Feedback */}
         {feedback && (
           <div
+            data-testid="drill-feedback"
             className="slide-up"
             style={{
               borderLeft: `2px solid ${feedback === 'correct' ? 'var(--correct)' : feedback === 'timeout' ? 'var(--timeout)' : 'var(--incorrect)'}`,

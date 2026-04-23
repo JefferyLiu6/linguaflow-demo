@@ -1,0 +1,68 @@
+import { expect, test } from 'playwright/test'
+import { getDB } from '../lib/drills'
+
+const spanishPhraseAnswers = new Map(
+  getDB('es')
+    .filter(item => item.category === 'phrase')
+    .map(item => [item.prompt, item.answer]),
+)
+
+test.describe('learner flow', () => {
+  test.beforeEach(async ({ context, page }) => {
+    await context.clearCookies()
+    await page.addInitScript(() => {
+      window.localStorage.clear()
+      window.sessionStorage.clear()
+    })
+  })
+
+  test('completes a built-in session and records the result on the dashboard', async ({ page }) => {
+    await page.goto('/')
+
+    await page.locator('main').getByRole('link', { name: 'Begin Training' }).first().click()
+    await expect(page.getByRole('heading', { name: 'New Session' })).toBeVisible()
+
+    await page.getByRole('button', { name: 'Select Phrase mode' }).click()
+
+    const decreaseCount = page.getByRole('button', { name: 'Decrease item count' })
+    for (let count = 10; count > 4; count -= 1) {
+      await decreaseCount.click()
+    }
+
+    await page.getByTestId('begin-session').click()
+    await expect(page).toHaveURL(/\/drill$/)
+
+    for (let index = 0; index < 4; index += 1) {
+      const prompt = (await page.getByTestId('drill-prompt').textContent())?.trim()
+      expect(prompt).toBeTruthy()
+
+      const answer = prompt ? spanishPhraseAnswers.get(prompt) : undefined
+      expect(answer, `Missing Spanish phrase answer for prompt: ${prompt ?? '[empty]'}`).toBeTruthy()
+
+      await page.getByLabel('Response').fill(answer!)
+      await page.getByRole('button', { name: 'Submit' }).click()
+
+      const feedbackPanel = page.getByTestId('drill-feedback')
+      await expect(feedbackPanel).toContainText('Correct.')
+      await feedbackPanel.getByRole('button', { name: index === 3 ? /View results/ : /^Next/ }).click()
+    }
+
+    await expect(page).toHaveURL(/\/dashboard$/)
+    await expect(page.getByRole('heading', { name: 'Training Results' })).toBeVisible()
+    await expect(page.getByText('Rolling Accuracy')).toBeVisible()
+    await expect(page.getByText('across 1 sessions')).toBeVisible()
+
+    const sessions = await page.evaluate(() =>
+      JSON.parse(window.localStorage.getItem('linguaflow_demo_sessions') ?? '[]'),
+    )
+
+    expect(sessions).toHaveLength(1)
+    expect(sessions[0]).toMatchObject({
+      drillType: 'phrase',
+      language: 'es',
+      total: 4,
+      correct: 4,
+      accuracy: 100,
+    })
+  })
+})

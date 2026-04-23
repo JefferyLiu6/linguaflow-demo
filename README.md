@@ -167,8 +167,8 @@ Note: the iteration history below includes earlier auth and Prisma-backed persis
 | Backend (AI) | FastAPI, LangGraph, OpenAI / Anthropic / Google / Groq / Ollama support |
 | Data | Browser `localStorage` in the current demo; Prisma schema retained in repo as inactive reference |
 | Auth | Disabled in the current demo; demo session cookie is used only for AI rate limiting |
-| Testing | Vitest unit tests plus route-level integration tests for the web API layer |
-| CI | GitHub Actions (`lint`, `tsc`, `test`, `build`, Python `py_compile`) |
+| Testing | Vitest unit tests, route-level integration tests, and Playwright E2E coverage for the learner flow |
+| CI | GitHub Actions (`lint`, `tsc`, `test`, `build`, `test:e2e`, Python `py_compile`) |
 
 ## Runtime Profile
 
@@ -225,6 +225,7 @@ The tutor service uses a router-plus-specialists graph:
 ### 4) Reliability workflow
 - Unit tests for drill normalization, answer checking, item selection, and stat aggregation
 - Route-level integration tests for demo reset, drill generation proxying, and tutor proxying
+- Browser E2E coverage for the core learner flow from session start to results dashboard
 - CI pipeline validates code health before merge
 
 ## Agent System Design
@@ -386,17 +387,19 @@ Create `.env.local` from `.env.example`.
 | `pnpm start` | Start production server |
 | `pnpm lint` | Run ESLint |
 | `pnpm test` | Run Vitest suite |
+| `pnpm test:e2e` | Run Playwright end-to-end coverage for the learner flow |
 | `pnpm test:watch` | Run tests in watch mode |
 | `pnpm demo:gif` | Re-record the demo GIF to `docs/demo/linguaflow-demo.gif` |
 
 ## Quality and CI
 
-- Test files currently live in `lib/*.test.ts` and `app/api/**/*.test.ts`
+- Test files currently live in `lib/*.test.ts`, `app/api/**/*.test.ts`, and `e2e/*.spec.ts`
 - CI workflow in `.github/workflows/ci.yml` runs:
   - `pnpm lint`
   - `npx tsc --noEmit`
   - `pnpm test`
   - `pnpm build`
+  - `pnpm test:e2e`
   - Python syntax checks for all agent modules
 
 ## Production Notes

@@ -70,7 +70,8 @@ export function Nav() {
             alt="LinguaFlow"
             width={190}
             height={36}
-            className="shrink-0 h-9 w-auto"
+            priority
+            style={{ width: 190, height: 36, flexShrink: 0 }}
           />
         </Link>
 
