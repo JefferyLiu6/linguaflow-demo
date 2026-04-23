@@ -30,6 +30,10 @@ The current public checkout runs in demo mode: learner progress, language prefer
 - **Optional AI backend**: `/api/generate-drills` and `/api/tutor*` proxy to the Python agent when it is running.
 - **Prisma schema retained for reference**: the repo still includes the earlier Prisma data model, but the current demo build does not use it at runtime.
 
+## Animated Demo
+
+![LinguaFlow animated demo](docs/demo/linguaflow-demo.gif)
+
 ## Screenshots
 
 **Home — drill session widget and language picker**
@@ -383,6 +387,7 @@ Create `.env.local` from `.env.example`.
 | `pnpm lint` | Run ESLint |
 | `pnpm test` | Run Vitest suite |
 | `pnpm test:watch` | Run tests in watch mode |
+| `pnpm demo:gif` | Re-record the demo GIF to `docs/demo/linguaflow-demo.gif` |
 
 ## Quality and CI
 
