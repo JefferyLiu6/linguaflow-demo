@@ -1,6 +1,7 @@
 {
   "name": "linguaflow-demo",
   "version": "0.1.0",
+  "packageManager": "pnpm@10.32.1",
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
