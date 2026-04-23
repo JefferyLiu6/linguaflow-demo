@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 import { Nav } from '@/components/Nav'
 
@@ -30,10 +31,34 @@ export const metadata: Metadata = {
   description: 'Audio-lingual drills. Timed. Unforgiving. Accuracy-first.',
 }
 
+const demoRefreshResetScript = `
+(() => {
+  try {
+    const navEntry = typeof performance.getEntriesByType === 'function'
+      ? performance.getEntriesByType('navigation')[0]
+      : null;
+    const navType = navEntry && typeof navEntry === 'object' && 'type' in navEntry
+      ? navEntry.type
+      : (performance.navigation && performance.navigation.type === 1 ? 'reload' : 'navigate');
+
+    if (navType !== 'reload') return;
+
+    localStorage.removeItem('linguaflow_demo_sessions');
+    localStorage.removeItem('linguaflow_demo_language');
+    localStorage.removeItem('linguaflow_demo_custom_list');
+  } catch {}
+})();
+`
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrains.variable}`}>
       <body className="min-h-screen flex flex-col antialiased">
+        <Script
+          id="demo-refresh-reset"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: demoRefreshResetScript }}
+        />
         <Nav />
         <main className="flex-1 flex flex-col">{children}</main>
       </body>

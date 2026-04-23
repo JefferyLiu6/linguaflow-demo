@@ -16,7 +16,7 @@ test.describe('learner flow', () => {
     })
   })
 
-  test('completes a built-in session and records the result on the dashboard', async ({ page }) => {
+  test('completes a built-in session, records the result, and clears demo state on refresh', async ({ page }) => {
     await page.goto('/')
 
     await page.locator('main').getByRole('link', { name: 'Begin Training' }).first().click()
@@ -64,5 +64,14 @@ test.describe('learner flow', () => {
       correct: 4,
       accuracy: 100,
     })
+
+    await page.reload()
+    await expect(page.getByRole('heading', { name: 'No data yet.' })).toBeVisible()
+
+    const sessionsAfterReload = await page.evaluate(() =>
+      JSON.parse(window.localStorage.getItem('linguaflow_demo_sessions') ?? '[]'),
+    )
+
+    expect(sessionsAfterReload).toHaveLength(0)
   })
 })
