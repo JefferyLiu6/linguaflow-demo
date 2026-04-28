@@ -3,45 +3,80 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-}
-
-model User {
-  id           String         @id @default(cuid())
-  email        String         @unique
-  name         String?
-  password     String
-  createdAt    DateTime       @default(now())
-  drillSessions DrillSession[]
-  customList   CustomList?
-  settings     UserSettings?
+  provider = "postgresql"
 }
 
 model DrillSession {
-  id        String   @id
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  date      Float
-  drillType String
-  language  String?
-  correct   Int
-  total     Int
-  accuracy  Int
-  avgTime   Float
-  results   String
-  createdAt DateTime @default(now())
+  id              String   @id @default(cuid())
+  userId          String   @db.Uuid
+  clientSessionId String
+  date            Float
+  drillType       String
+  language        String?
+  correct         Int
+  total           Int
+  accuracy        Int
+  avgTime         Float
+  results         Json
+  createdAt       DateTime @default(now())
+
+  @@unique([userId, clientSessionId])
+  @@index([userId])
 }
 
 model CustomList {
   id        String   @id @default(cuid())
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items     String
+  userId    String   @unique @db.Uuid
+  items     Json
   updatedAt DateTime @updatedAt
 }
 
 model UserSettings {
-  userId   String @id
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  language String @default("es")
+  userId    String   @id @db.Uuid
+  language  String   @default("es")
+  updatedAt DateTime @updatedAt
+}
+
+// Phase 3: pgvector-backed retrieval document store.
+// The embedding column uses the pgvector `vector(1536)` type which Prisma
+// cannot generate or query. All vector reads/writes go through psycopg2
+// in agent/retrieval/db.py. Prisma only manages the non-vector columns.
+model AiResponseFeedback {
+  id               String   @id @default(cuid())
+  userId           String   @db.Uuid
+  responseId       String
+  surface          String   // "tutor" | "study"
+  mode             String   // tutor route (explain/clarify) or study action
+  language         String
+  itemId           String
+  sourceId         String
+  sourceTitle      String
+  helpful          Boolean
+  userPrompt       String?
+  assistantMessage String
+  model            String
+  createdAt        DateTime @default(now())
+
+  @@unique([userId, responseId])
+  @@index([userId, createdAt])
+  @@index([surface, createdAt])
+  @@index([sourceId, createdAt])
+}
+
+model RetrievalDoc {
+  id               String   @id
+  conceptId        String
+  language         String
+  kind             String
+  title            String
+  chunkText        String
+  tags             Json     @default("[]")
+  authoringItemIds Json     @default("[]")
+  active           Boolean  @default(true)
+  chunkHash        String   @default("")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([language, kind, active])
+  @@map("retrieval_doc")
 }

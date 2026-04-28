@@ -1,0 +1,4621 @@
+{
+  "n_cases": 30,
+  "model": "openai/gpt-4o-mini",
+  "summary_md": "| arm | n | weak_top_2 | topic_top_2 | drill_type_top_2 | must_not_violated | fallback | phantom_ids |\n|---|---|---|---|---|---|---|---|\n| heuristic_only | 30 | 0.90 | 0.87 | 1.00 | 0.00 | 1.00 | 0.00 |\n| naive | 30 | 0.67 | 0.77 | 1.00 | 0.17 | 1.00 | 0.00 |\n| llm_blind | 30 | 0.93 | 0.90 | 1.00 | 0.10 | 0.30 | 0.03 |\n| llm_with_context | 30 | 0.90 | 0.87 | 0.20 | 0.00 | 0.13 | 0.00 |",
+  "by_arm": {
+    "heuristic_only": [
+      {
+        "case_id": "formal_register_struggler-1",
+        "metrics": {
+          "case_id": "formal_register_struggler-1",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-2",
+        "metrics": {
+          "case_id": "formal_register_struggler-2",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-3",
+        "metrics": {
+          "case_id": "formal_register_struggler-3",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "phrase_idiom",
+            "formal_register",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-4",
+        "metrics": {
+          "case_id": "formal_register_struggler-4",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-5",
+        "metrics": {
+          "case_id": "formal_register_struggler-5",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-1",
+        "metrics": {
+          "case_id": "vocab_gaps-1",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "money",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-2",
+        "metrics": {
+          "case_id": "vocab_gaps-2",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "food",
+            "money"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-3",
+        "metrics": {
+          "case_id": "vocab_gaps-3",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "money",
+            "food",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "money",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-4",
+        "metrics": {
+          "case_id": "vocab_gaps-4",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "money",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-5",
+        "metrics": {
+          "case_id": "vocab_gaps-5",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "money",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-1",
+        "metrics": {
+          "case_id": "speed_struggler-1",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "complex_sentence_combination",
+            "passive_voice",
+            "sentence_transformation"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-2",
+        "metrics": {
+          "case_id": "speed_struggler-2",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "complex_sentence_combination",
+            "sentence_transformation",
+            "passive_voice"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-3",
+        "metrics": {
+          "case_id": "speed_struggler-3",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "passive_voice",
+            "sentence_transformation",
+            "complex_sentence_combination"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-4",
+        "metrics": {
+          "case_id": "speed_struggler-4",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "complex_sentence_combination",
+            "sentence_transformation",
+            "passive_voice"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-5",
+        "metrics": {
+          "case_id": "speed_struggler-5",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "passive_voice",
+            "sentence_transformation",
+            "complex_sentence_combination"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-1",
+        "metrics": {
+          "case_id": "topic_blocker-1",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "phrase_idiom",
+            "formal_register",
+            "single_precise_verb"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-2",
+        "metrics": {
+          "case_id": "topic_blocker-2",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "sentence_transformation"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-3",
+        "metrics": {
+          "case_id": "topic_blocker-3",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "sentence_transformation",
+            "phrase_idiom"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-4",
+        "metrics": {
+          "case_id": "topic_blocker-4",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "phrase_idiom",
+            "formal_register",
+            "single_precise_verb"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-5",
+        "metrics": {
+          "case_id": "topic_blocker-5",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "phrase_idiom",
+            "formal_register",
+            "sentence_transformation"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-1",
+        "metrics": {
+          "case_id": "recently_improved-1",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "sentence_transformation",
+            "formal_register",
+            "passive_voice"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-2",
+        "metrics": {
+          "case_id": "recently_improved-2",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "single_precise_verb",
+            "advanced_synonym_precision",
+            "topic_specific_vocab"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-3",
+        "metrics": {
+          "case_id": "recently_improved-3",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "single_precise_verb",
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-4",
+        "metrics": {
+          "case_id": "recently_improved-4",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "sentence_transformation",
+            "single_precise_verb"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-5",
+        "metrics": {
+          "case_id": "recently_improved-5",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "single_precise_verb",
+            "advanced_synonym_precision",
+            "formal_register"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-1",
+        "metrics": {
+          "case_id": "mixed_bag-1",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "complex_sentence_combination",
+            "phrase_idiom",
+            "topic_specific_vocab"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "food",
+            "money",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "food",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-2",
+        "metrics": {
+          "case_id": "mixed_bag-2",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "sentence_transformation",
+            "complex_sentence_combination"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "food",
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "food",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-3",
+        "metrics": {
+          "case_id": "mixed_bag-3",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision",
+            "phrase_idiom"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "health",
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "health",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-4",
+        "metrics": {
+          "case_id": "mixed_bag-4",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "sentence_transformation"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "sport",
+            "money",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "sport",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-5",
+        "metrics": {
+          "case_id": "mixed_bag-5",
+          "arm": "heuristic_only",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "phrase_idiom",
+            "topic_specific_vocab",
+            "formal_register"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "money",
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "money",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      }
+    ],
+    "naive": [
+      {
+        "case_id": "formal_register_struggler-1",
+        "metrics": {
+          "case_id": "formal_register_struggler-1",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-2",
+        "metrics": {
+          "case_id": "formal_register_struggler-2",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-3",
+        "metrics": {
+          "case_id": "formal_register_struggler-3",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-4",
+        "metrics": {
+          "case_id": "formal_register_struggler-4",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-5",
+        "metrics": {
+          "case_id": "formal_register_struggler-5",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-1",
+        "metrics": {
+          "case_id": "vocab_gaps-1",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-2",
+        "metrics": {
+          "case_id": "vocab_gaps-2",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-3",
+        "metrics": {
+          "case_id": "vocab_gaps-3",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-4",
+        "metrics": {
+          "case_id": "vocab_gaps-4",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-5",
+        "metrics": {
+          "case_id": "vocab_gaps-5",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-1",
+        "metrics": {
+          "case_id": "speed_struggler-1",
+          "arm": "naive",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-2",
+        "metrics": {
+          "case_id": "speed_struggler-2",
+          "arm": "naive",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-3",
+        "metrics": {
+          "case_id": "speed_struggler-3",
+          "arm": "naive",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-4",
+        "metrics": {
+          "case_id": "speed_struggler-4",
+          "arm": "naive",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-5",
+        "metrics": {
+          "case_id": "speed_struggler-5",
+          "arm": "naive",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-1",
+        "metrics": {
+          "case_id": "topic_blocker-1",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-2",
+        "metrics": {
+          "case_id": "topic_blocker-2",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-3",
+        "metrics": {
+          "case_id": "topic_blocker-3",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-4",
+        "metrics": {
+          "case_id": "topic_blocker-4",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-5",
+        "metrics": {
+          "case_id": "topic_blocker-5",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "recently_improved-1",
+        "metrics": {
+          "case_id": "recently_improved-1",
+          "arm": "naive",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": true,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "recently_improved-2",
+        "metrics": {
+          "case_id": "recently_improved-2",
+          "arm": "naive",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": true,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "recently_improved-3",
+        "metrics": {
+          "case_id": "recently_improved-3",
+          "arm": "naive",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": true,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "recently_improved-4",
+        "metrics": {
+          "case_id": "recently_improved-4",
+          "arm": "naive",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": true,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "recently_improved-5",
+        "metrics": {
+          "case_id": "recently_improved-5",
+          "arm": "naive",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": true,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-1",
+        "metrics": {
+          "case_id": "mixed_bag-1",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-2",
+        "metrics": {
+          "case_id": "mixed_bag-2",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-3",
+        "metrics": {
+          "case_id": "mixed_bag-3",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-4",
+        "metrics": {
+          "case_id": "mixed_bag-4",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-5",
+        "metrics": {
+          "case_id": "mixed_bag-5",
+          "arm": "naive",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": null,
+          "confidence": 0.0
+        }
+      }
+    ],
+    "llm_blind": [
+      {
+        "case_id": "formal_register_struggler-1",
+        "metrics": {
+          "case_id": "formal_register_struggler-1",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "phrase",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily",
+            "tech"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-2",
+        "metrics": {
+          "case_id": "formal_register_struggler-2",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "phrase"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily",
+            "tech"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-3",
+        "metrics": {
+          "case_id": "formal_register_struggler-3",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "phrase",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily",
+            "tech"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-4",
+        "metrics": {
+          "case_id": "formal_register_struggler-4",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "phrase",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily",
+            "health"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-5",
+        "metrics": {
+          "case_id": "formal_register_struggler-5",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "phrase"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-1",
+        "metrics": {
+          "case_id": "vocab_gaps-1",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "money",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "validator_rejected",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-2",
+        "metrics": {
+          "case_id": "vocab_gaps-2",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision",
+            "formal_register"
+          ],
+          "recommended_drill_types": [
+            "vocab",
+            "sentence",
+            "translation"
+          ],
+          "recommended_topics": [
+            "daily",
+            "work",
+            "money"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "vocab",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-3",
+        "metrics": {
+          "case_id": "vocab_gaps-3",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "money",
+            "food",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "money",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "validator_rejected",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-4",
+        "metrics": {
+          "case_id": "vocab_gaps-4",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "daily",
+            "money",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "model_invalid_json",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-5",
+        "metrics": {
+          "case_id": "vocab_gaps-5",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "vocab",
+            "sentence_transformation"
+          ],
+          "recommended_topics": [
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "vocab",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-1",
+        "metrics": {
+          "case_id": "speed_struggler-1",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 0.6
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "complex_sentence_combination",
+            "passive_voice"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 0.6
+        }
+      },
+      {
+        "case_id": "speed_struggler-2",
+        "metrics": {
+          "case_id": "speed_struggler-2",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 0.6
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "passive_voice",
+            "complex_sentence_combination"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "phrase",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 0.6
+        }
+      },
+      {
+        "case_id": "speed_struggler-3",
+        "metrics": {
+          "case_id": "speed_struggler-3",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 0.8
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "passive_voice",
+            "complex_sentence_combination"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "phrase",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily",
+            "project"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 0.8
+        }
+      },
+      {
+        "case_id": "speed_struggler-4",
+        "metrics": {
+          "case_id": "speed_struggler-4",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 0.8
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "complex_sentence_combination"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "phrase",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 0.8
+        }
+      },
+      {
+        "case_id": "speed_struggler-5",
+        "metrics": {
+          "case_id": "speed_struggler-5",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "passive_voice",
+            "formal_register",
+            "complex_sentence_combination"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-1",
+        "metrics": {
+          "case_id": "topic_blocker-1",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "single_precise_verb"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-2",
+        "metrics": {
+          "case_id": "topic_blocker-2",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "advanced_synonym_precision",
+            "passive_voice"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "phrase",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-3",
+        "metrics": {
+          "case_id": "topic_blocker-3",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "advanced_synonym_precision",
+            "single_precise_verb"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab",
+            "phrase"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily",
+            "sport"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-4",
+        "metrics": {
+          "case_id": "topic_blocker-4",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 7,
+          "confidence": 0.8
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "single_precise_verb",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab",
+            "phrase"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily",
+            "health"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 0.8
+        }
+      },
+      {
+        "case_id": "topic_blocker-5",
+        "metrics": {
+          "case_id": "topic_blocker-5",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "advanced_synonym_precision",
+            "single_precise_verb"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab",
+            "phrase"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-1",
+        "metrics": {
+          "case_id": "recently_improved-1",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.4
+        },
+        "plan_summary": {
+          "weak_points": [
+            "sentence_transformation",
+            "formal_register",
+            "passive_voice"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "low_confidence",
+          "confidence": 0.4
+        }
+      },
+      {
+        "case_id": "recently_improved-2",
+        "metrics": {
+          "case_id": "recently_improved-2",
+          "arm": "llm_blind",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": true,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 0.6
+        },
+        "plan_summary": {
+          "weak_points": [
+            "complex_sentence_combination",
+            "advanced_synonym_precision",
+            "sentence_transformation"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab",
+            "translation"
+          ],
+          "recommended_topics": [
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 0.6
+        }
+      },
+      {
+        "case_id": "recently_improved-3",
+        "metrics": {
+          "case_id": "recently_improved-3",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 0.4
+        },
+        "plan_summary": {
+          "weak_points": [
+            "single_precise_verb",
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "low_confidence",
+          "confidence": 0.4
+        }
+      },
+      {
+        "case_id": "recently_improved-4",
+        "metrics": {
+          "case_id": "recently_improved-4",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": true,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 0.8
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "advanced_synonym_precision",
+            "single_precise_verb"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab",
+            "translation"
+          ],
+          "recommended_topics": [
+            "daily",
+            "work",
+            "academic"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 0.8
+        }
+      },
+      {
+        "case_id": "recently_improved-5",
+        "metrics": {
+          "case_id": "recently_improved-5",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": true,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 0.6
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "advanced_synonym_precision",
+            "single_precise_verb",
+            "sentence_transformation"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab",
+            "translation"
+          ],
+          "recommended_topics": [
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 0.6
+        }
+      },
+      {
+        "case_id": "mixed_bag-1",
+        "metrics": {
+          "case_id": "mixed_bag-1",
+          "arm": "llm_blind",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "complex_sentence_combination",
+            "phrase_idiom",
+            "topic_specific_vocab"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "food",
+            "money",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "food",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "validator_rejected",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-2",
+        "metrics": {
+          "case_id": "mixed_bag-2",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "sentence_transformation",
+            "complex_sentence_combination"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "food",
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "food",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "validator_rejected",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-3",
+        "metrics": {
+          "case_id": "mixed_bag-3",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision",
+            "phrase_idiom"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "health",
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "health",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "validator_rejected",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-4",
+        "metrics": {
+          "case_id": "mixed_bag-4",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "sentence_transformation"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "sport",
+            "money",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "sport",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "validator_rejected",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-5",
+        "metrics": {
+          "case_id": "mixed_bag-5",
+          "arm": "llm_blind",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 0.6
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 0.6
+        }
+      }
+    ],
+    "llm_with_context": [
+      {
+        "case_id": "formal_register_struggler-1",
+        "metrics": {
+          "case_id": "formal_register_struggler-1",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-2",
+        "metrics": {
+          "case_id": "formal_register_struggler-2",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "validator_rejected",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-3",
+        "metrics": {
+          "case_id": "formal_register_struggler-3",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "phrase_idiom",
+            "formal_register",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-4",
+        "metrics": {
+          "case_id": "formal_register_struggler-4",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "formal_register_struggler-5",
+        "metrics": {
+          "case_id": "formal_register_struggler-5",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-1",
+        "metrics": {
+          "case_id": "vocab_gaps-1",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "substitution"
+          ],
+          "recommended_topics": [
+            "daily",
+            "money",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "substitution",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-2",
+        "metrics": {
+          "case_id": "vocab_gaps-2",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "substitution"
+          ],
+          "recommended_topics": [
+            "daily",
+            "food",
+            "money"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "substitution",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-3",
+        "metrics": {
+          "case_id": "vocab_gaps-3",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "substitution"
+          ],
+          "recommended_topics": [
+            "money",
+            "food",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "substitution",
+            "topic": "money",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-4",
+        "metrics": {
+          "case_id": "vocab_gaps-4",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "substitution"
+          ],
+          "recommended_topics": [
+            "daily",
+            "money",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "substitution",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "vocab_gaps-5",
+        "metrics": {
+          "case_id": "vocab_gaps-5",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "substitution"
+          ],
+          "recommended_topics": [
+            "daily",
+            "money",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "substitution",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-1",
+        "metrics": {
+          "case_id": "speed_struggler-1",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "complex_sentence_combination",
+            "passive_voice",
+            "sentence_transformation",
+            "formal_register"
+          ],
+          "recommended_drill_types": [
+            "transformation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "transformation",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-2",
+        "metrics": {
+          "case_id": "speed_struggler-2",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "complex_sentence_combination",
+            "sentence_transformation",
+            "passive_voice",
+            "formal_register"
+          ],
+          "recommended_drill_types": [
+            "transformation",
+            "sentence",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "transformation",
+            "topic": "daily",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-3",
+        "metrics": {
+          "case_id": "speed_struggler-3",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "passive_voice",
+            "sentence_transformation",
+            "complex_sentence_combination",
+            "formal_register"
+          ],
+          "recommended_drill_types": [
+            "transformation",
+            "translation"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "transformation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-4",
+        "metrics": {
+          "case_id": "speed_struggler-4",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "complex_sentence_combination",
+            "sentence_transformation",
+            "passive_voice",
+            "formal_register"
+          ],
+          "recommended_drill_types": [
+            "transformation",
+            "sentence",
+            "phrase"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "transformation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "speed_struggler-5",
+        "metrics": {
+          "case_id": "speed_struggler-5",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "passive_voice",
+            "sentence_transformation",
+            "complex_sentence_combination",
+            "formal_register"
+          ],
+          "recommended_drill_types": [
+            "transformation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "transformation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-1",
+        "metrics": {
+          "case_id": "topic_blocker-1",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "single_precise_verb",
+            "phrase_idiom",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-2",
+        "metrics": {
+          "case_id": "topic_blocker-2",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "sentence_transformation",
+            "topic_specific_vocab",
+            "passive_voice"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "work",
+            "health"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-3",
+        "metrics": {
+          "case_id": "topic_blocker-3",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "sentence_transformation",
+            "phrase_idiom",
+            "passive_voice",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "transformation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily",
+            "sport"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-4",
+        "metrics": {
+          "case_id": "topic_blocker-4",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "phrase_idiom",
+            "formal_register",
+            "single_precise_verb"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "substitution",
+            "transformation"
+          ],
+          "recommended_topics": [
+            "work",
+            "health",
+            "food"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "topic_blocker-5",
+        "metrics": {
+          "case_id": "topic_blocker-5",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "phrase_idiom",
+            "formal_register",
+            "sentence_transformation",
+            "single_precise_verb",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "substitution",
+            "transformation"
+          ],
+          "recommended_topics": [
+            "work",
+            "food",
+            "sport"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-1",
+        "metrics": {
+          "case_id": "recently_improved-1",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "sentence_transformation",
+            "formal_register",
+            "passive_voice",
+            "topic_specific_vocab",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "transformation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "transformation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-2",
+        "metrics": {
+          "case_id": "recently_improved-2",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "single_precise_verb",
+            "advanced_synonym_precision",
+            "topic_specific_vocab",
+            "formal_register",
+            "sentence_transformation"
+          ],
+          "recommended_drill_types": [
+            "substitution",
+            "transformation",
+            "translation"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "substitution",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-3",
+        "metrics": {
+          "case_id": "recently_improved-3",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "single_precise_verb",
+            "topic_specific_vocab",
+            "advanced_synonym_precision",
+            "sentence_transformation",
+            "formal_register"
+          ],
+          "recommended_drill_types": [
+            "substitution",
+            "transformation",
+            "translation"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "substitution",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-4",
+        "metrics": {
+          "case_id": "recently_improved-4",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "sentence_transformation",
+            "single_precise_verb",
+            "advanced_synonym_precision",
+            "complex_sentence_combination"
+          ],
+          "recommended_drill_types": [
+            "transformation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "transformation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "recently_improved-5",
+        "metrics": {
+          "case_id": "recently_improved-5",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "single_precise_verb",
+            "advanced_synonym_precision",
+            "formal_register",
+            "sentence_transformation",
+            "topic_specific_vocab"
+          ],
+          "recommended_drill_types": [
+            "substitution",
+            "transformation"
+          ],
+          "recommended_topics": [
+            "work",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "substitution",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-1",
+        "metrics": {
+          "case_id": "mixed_bag-1",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "complex_sentence_combination",
+            "phrase_idiom",
+            "topic_specific_vocab",
+            "formal_register",
+            "advanced_synonym_precision"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "transformation",
+            "substitution"
+          ],
+          "recommended_topics": [
+            "food",
+            "money",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "food",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-2",
+        "metrics": {
+          "case_id": "mixed_bag-2",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "sentence_transformation",
+            "complex_sentence_combination"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "food",
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "food",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "validator_rejected",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-3",
+        "metrics": {
+          "case_id": "mixed_bag-3",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": true,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "topic_specific_vocab",
+            "advanced_synonym_precision",
+            "phrase_idiom"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "health",
+            "daily",
+            "work"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "health",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "validator_rejected",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-4",
+        "metrics": {
+          "case_id": "mixed_bag-4",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": true,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": true,
+          "must_not_violated": false,
+          "fallback_fired": true,
+          "phantom_id_count": 0,
+          "confidence": 1.0
+        },
+        "plan_summary": {
+          "weak_points": [
+            "formal_register",
+            "phrase_idiom",
+            "sentence_transformation"
+          ],
+          "recommended_drill_types": [
+            "sentence",
+            "vocab"
+          ],
+          "recommended_topics": [
+            "sport",
+            "money",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "sentence",
+            "topic": "sport",
+            "count": 10
+          },
+          "source": "heuristic_fallback",
+          "fallback_reason": "validator_rejected",
+          "confidence": 1.0
+        }
+      },
+      {
+        "case_id": "mixed_bag-5",
+        "metrics": {
+          "case_id": "mixed_bag-5",
+          "arm": "llm_with_context",
+          "weak_top_2_hit": false,
+          "topic_top_2_hit": false,
+          "drill_type_top_2_hit": false,
+          "must_not_violated": false,
+          "fallback_fired": false,
+          "phantom_id_count": 0,
+          "confidence": 0.8
+        },
+        "plan_summary": {
+          "weak_points": [
+            "phrase_idiom",
+            "topic_specific_vocab",
+            "formal_register",
+            "advanced_synonym_precision",
+            "sentence_transformation"
+          ],
+          "recommended_drill_types": [
+            "translation",
+            "substitution",
+            "transformation"
+          ],
+          "recommended_topics": [
+            "work",
+            "money",
+            "daily"
+          ],
+          "next_session_plan": {
+            "language": "en",
+            "drill_type": "translation",
+            "topic": "work",
+            "count": 10
+          },
+          "source": "model",
+          "fallback_reason": null,
+          "confidence": 0.8
+        }
+      }
+    ]
+  },
+  "calibration": [
+    {
+      "tau": 0.4,
+      "catch_rate": 0.0,
+      "wrong_fallback_rate": 0.0,
+      "score": 0.0
+    },
+    {
+      "tau": 0.45,
+      "catch_rate": 0.0,
+      "wrong_fallback_rate": 0.0,
+      "score": 0.0
+    },
+    {
+      "tau": 0.5,
+      "catch_rate": 0.0,
+      "wrong_fallback_rate": 0.0,
+      "score": 0.0
+    },
+    {
+      "tau": 0.55,
+      "catch_rate": 0.0,
+      "wrong_fallback_rate": 0.0,
+      "score": 0.0
+    },
+    {
+      "tau": 0.6,
+      "catch_rate": 0.0,
+      "wrong_fallback_rate": 0.0,
+      "score": 0.0
+    },
+    {
+      "tau": 0.65,
+      "catch_rate": 0.0,
+      "wrong_fallback_rate": 0.0,
+      "score": 0.0
+    },
+    {
+      "tau": 0.7,
+      "catch_rate": 0.0,
+      "wrong_fallback_rate": 0.0,
+      "score": 0.0
+    }
+  ],
+  "calibration_recommendation": {
+    "tau": 0.4,
+    "catch_rate": 0.0,
+    "wrong_fallback_rate": 0.0,
+    "score": 0.0
+  }
+}

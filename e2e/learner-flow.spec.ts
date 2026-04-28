@@ -14,14 +14,15 @@ async function getDemoCookieValue(context: BrowserContext) {
 
 test.describe('learner flow', () => {
   test.beforeEach(async ({ context, page }) => {
-    await context.clearCookies()
-    await page.addInitScript(() => {
+    await page.goto('/')
+    await page.evaluate(() => {
       window.localStorage.clear()
       window.sessionStorage.clear()
     })
+    await context.clearCookies()
   })
 
-  test('completes a built-in session, records the result, and clears demo state on refresh', async ({ page }) => {
+  test('completes a built-in session, records the result, and keeps guest data across refresh', async ({ page }) => {
     await page.goto('/')
 
     const initialDemoCookie = await getDemoCookieValue(page.context())
@@ -74,16 +75,24 @@ test.describe('learner flow', () => {
     })
 
     await page.reload()
-    await expect(page.getByRole('heading', { name: 'No data yet.' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Training Results' })).toBeVisible()
+    await expect(page.getByText('across 1 sessions')).toBeVisible()
 
     const sessionsAfterReload = await page.evaluate(() =>
       JSON.parse(window.localStorage.getItem('linguaflow_demo_sessions') ?? '[]'),
     )
 
-    expect(sessionsAfterReload).toHaveLength(0)
+    expect(sessionsAfterReload).toHaveLength(1)
+    expect(sessionsAfterReload[0]).toMatchObject({
+      drillType: 'phrase',
+      language: 'es',
+      total: 4,
+      correct: 4,
+      accuracy: 100,
+    })
 
-    const rotatedDemoCookie = await getDemoCookieValue(page.context())
-    expect(rotatedDemoCookie).toBeTruthy()
-    expect(rotatedDemoCookie).not.toBe(initialDemoCookie)
+    const demoCookieAfterReload = await getDemoCookieValue(page.context())
+    expect(demoCookieAfterReload).toBeTruthy()
+    expect(demoCookieAfterReload).toBe(initialDemoCookie)
   })
 })

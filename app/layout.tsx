@@ -1,24 +1,26 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
+import { Playfair_Display, DM_Sans, JetBrains_Mono } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import { Nav } from '@/components/Nav'
+import { getAuthState } from '@/lib/auth'
 
-// Display / headings / large numbers — sharp, architectural geometric sans
-const spaceGrotesk = Space_Grotesk({
+// Display / headings — Playfair Display per Grove design spec
+const playfair = Playfair_Display({
   variable: '--font-fraunces',   // keep existing variable name — zero component changes needed
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
 })
 
-// Primary UI & body — highly legible, neutral modern sans
-const inter = Inter({
-  variable: '--font-manrope',    // keep existing variable name
+// Body / UI — DM Sans per Grove design spec
+const dmSans = DM_Sans({
+  variable: '--font-manrope',    // keep existing variable name — zero component changes needed
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
 })
 
-// Data, timers, inputs, code — crisp technical monospace
+// Code / prompts — JetBrains Mono per Grove design spec
 const jetbrains = JetBrains_Mono({
   variable: '--font-jetbrains',
   subsets: ['latin'],
@@ -31,26 +33,23 @@ export const metadata: Metadata = {
   description: 'Audio-lingual drills. Timed. Unforgiving. Accuracy-first.',
 }
 
-const demoRefreshResetScript = `
-(() => {
-  try {
-    localStorage.removeItem('linguaflow_demo_sessions');
-    localStorage.removeItem('linguaflow_demo_language');
-    localStorage.removeItem('linguaflow_demo_custom_list');
-  } catch {}
-})();
-`
+function serializeInlineScript(value: unknown) {
+  return JSON.stringify(value).replace(/</g, '\\u003c')
+}
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const { user } = await getAuthState()
+  const authBootstrapScript = `window.__LINGUAFLOW_AUTH__ = ${serializeInlineScript(user)};`
+
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={`${playfair.variable} ${dmSans.variable} ${jetbrains.variable}`}>
       <body className="min-h-screen flex flex-col antialiased">
         <Script
-          id="demo-refresh-reset"
+          id="auth-bootstrap"
           strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: demoRefreshResetScript }}
+          dangerouslySetInnerHTML={{ __html: authBootstrapScript }}
         />
-        <Nav />
+        <Nav initialUser={user} />
         <main className="flex-1 flex flex-col">{children}</main>
       </body>
     </html>

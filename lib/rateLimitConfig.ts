@@ -25,6 +25,18 @@ export const RATE_LIMIT = {
       ipMinute: intFromEnv('DEMO_TUTOR_IP_MINUTE_LIMIT', 60),
       ipDaily: intFromEnv('DEMO_TUTOR_IP_DAILY_LIMIT', 40),
     },
+    planner: {
+      sessionMinute: intFromEnv('DEMO_PLANNER_SESSION_MINUTE_LIMIT', 2),
+      sessionDaily: intFromEnv('DEMO_PLANNER_SESSION_DAILY_LIMIT', 10),
+      ipMinute: intFromEnv('DEMO_PLANNER_IP_MINUTE_LIMIT', 10),
+      ipDaily: intFromEnv('DEMO_PLANNER_IP_DAILY_LIMIT', 20),
+    },
+    'study-assist': {
+      sessionMinute: intFromEnv('DEMO_STUDY_ASSIST_SESSION_MINUTE_LIMIT', 6),
+      sessionDaily: intFromEnv('DEMO_STUDY_ASSIST_SESSION_DAILY_LIMIT', 30),
+      ipMinute: intFromEnv('DEMO_STUDY_ASSIST_IP_MINUTE_LIMIT', 30),
+      ipDaily: intFromEnv('DEMO_STUDY_ASSIST_IP_DAILY_LIMIT', 60),
+    },
   },
   reset: {
     sessionBurst: intFromEnv('DEMO_RESET_SESSION_BURST_LIMIT', 1),

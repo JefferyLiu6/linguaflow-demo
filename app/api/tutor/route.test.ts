@@ -30,6 +30,7 @@ describe('/api/tutor', () => {
       }),
     )
     expect(missingItemRes.status).toBe(400)
+    expect(missingItemRes.headers.get('Set-Cookie')).toContain('linguaflow_demo_sid=')
     await expect(missingItemRes.json()).resolves.toEqual({ error: 'currentItem is required' })
 
     const missingMessagesRes = await POST(
@@ -38,6 +39,7 @@ describe('/api/tutor', () => {
       }),
     )
     expect(missingMessagesRes.status).toBe(400)
+    expect(missingMessagesRes.headers.get('Set-Cookie')).toContain('linguaflow_demo_sid=')
     await expect(missingMessagesRes.json()).resolves.toEqual({
       error: 'messages must be a non-empty array',
     })
@@ -52,6 +54,10 @@ describe('/api/tutor', () => {
             hint_level: 2,
             suggested_phrase: 'Try the nosotros form.',
             learner_ready: false,
+            retrieval_hit: true,
+            retrieved_sources: [
+              { id: 'note_1', title: 'Subject agreement contrast' },
+            ],
           },
           model: 'openai/gpt-4o-mini',
           elapsed_ms: 654,
@@ -73,6 +79,9 @@ describe('/api/tutor', () => {
           itemsTotal: 10,
         },
         currentItem: {
+          id: 'es01',
+          category: 'sentence',
+          topic: 'daily',
           instruction: 'Translate to Spanish.',
           prompt: 'We speak English.',
           type: 'translation',
@@ -103,7 +112,9 @@ describe('/api/tutor', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1)
     const [url, init] = fetchMock.mock.calls[0] ?? []
     expect(url).toBe('http://localhost:8000/tutor')
-    expect(JSON.parse(String(init?.body))).toEqual({
+    const payload = JSON.parse(String(init?.body))
+    expect(payload.request_id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
+    expect(payload).toMatchObject({
       model: 'openai/gpt-4o-mini',
       session_context: {
         language: 'Spanish',
@@ -112,6 +123,9 @@ describe('/api/tutor', () => {
         items_total: 10,
       },
       current_item: {
+        id: 'es01',
+        category: 'sentence',
+        topic: 'daily',
         instruction: 'Translate to Spanish.',
         prompt: 'We speak English.',
         type: 'translation',
@@ -136,15 +150,20 @@ describe('/api/tutor', () => {
     })
 
     expect(res.status).toBe(200)
-    await expect(res.json()).resolves.toEqual({
+    await expect(res.json()).resolves.toMatchObject({
       assistantMessage: 'Think about the verb ending first.',
       structured: {
         hintLevel: 2,
         suggestedPhrase: 'Try the nosotros form.',
         learnerReady: false,
+        retrievalHit: true,
+        retrievedSources: [
+          { id: 'note_1', title: 'Subject agreement contrast' },
+        ],
       },
       model: 'openai/gpt-4o-mini',
       elapsedMs: 654,
+      responseId: null,  // Python response had no response_id field
     })
   })
 
@@ -154,6 +173,9 @@ describe('/api/tutor', () => {
     const req = buildRequest(
       JSON.stringify({
         currentItem: {
+          id: 'es01',
+          category: 'sentence',
+          topic: 'daily',
           instruction: 'Translate to Spanish.',
           prompt: 'Hello.',
           type: 'translation',
@@ -169,6 +191,7 @@ describe('/api/tutor', () => {
     const res = await POST(req)
 
     expect(res.status).toBe(502)
+    expect(res.headers.get('Set-Cookie')).toContain('linguaflow_demo_sid=')
     await expect(res.json()).resolves.toEqual({
       error: 'Python agent is not running or timed out — start it with: cd agent && uvicorn main:app --port 8000 --reload',
     })

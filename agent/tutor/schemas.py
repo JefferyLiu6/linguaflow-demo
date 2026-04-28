@@ -23,6 +23,9 @@ class SessionContext(BaseModel):
 
 
 class CurrentItem(BaseModel):
+    id:              str = ""
+    category:        Optional[str] = None
+    topic:           Optional[str] = None
     instruction:     str
     prompt:          str
     type:            str
@@ -52,6 +55,7 @@ class TutorConstraints(BaseModel):
 class TutorRequest(BaseModel):
     mode:            Literal["feedback", "tutor"] = "tutor"
     model:           str               = DEFAULT_MODEL
+    request_id:      Optional[str]     = None
     session_context: SessionContext    = Field(default_factory=SessionContext)
     current_item:    CurrentItem
     recent_items:    list[RecentItem]  = Field(default_factory=list)
@@ -62,10 +66,17 @@ class TutorRequest(BaseModel):
 # ── API response ──────────────────────────────────────────────────────────────
 
 
+class RetrievedSource(BaseModel):
+    id: str
+    title: str
+
+
 class TutorStructured(BaseModel):
     hint_level:       Optional[int]  = None
     suggested_phrase: Optional[str]  = None
     learner_ready:    Optional[bool] = None
+    retrieval_hit:    Optional[bool] = None
+    retrieved_sources: Optional[list[RetrievedSource]] = None
 
 
 class TutorResponse(BaseModel):
@@ -73,6 +84,7 @@ class TutorResponse(BaseModel):
     structured:        Optional[TutorStructured] = None
     model:             str
     elapsed_ms:        int
+    response_id:       Optional[str] = None
 
 
 # ── LangGraph state ───────────────────────────────────────────────────────────
@@ -80,6 +92,7 @@ class TutorResponse(BaseModel):
 
 class TutorState(TypedDict):
     model_name:        str
+    request_id:        str | None
     session_context:   dict[str, Any]
     current_item:      dict[str, Any]
     recent_items:      list[dict[str, Any]]
@@ -89,3 +102,4 @@ class TutorState(TypedDict):
     hint_level:        int
     assistant_message: str
     structured_data:   dict[str, Any]
+    retrieval_debug:   dict[str, Any] | None

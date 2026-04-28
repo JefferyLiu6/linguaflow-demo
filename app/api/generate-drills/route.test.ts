@@ -1,4 +1,10 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+const getAuthenticatedUserMock = vi.hoisted(() => vi.fn())
+
+vi.mock('@/lib/auth', () => ({
+  getAuthenticatedUser: getAuthenticatedUserMock,
+}))
 
 import { POST } from './route'
 
@@ -20,15 +26,58 @@ function buildRequest(body: BodyInit, init?: { ip?: string; cookie?: string }) {
 
 afterEach(() => {
   vi.restoreAllMocks()
+  getAuthenticatedUserMock.mockReset()
+})
+
+beforeEach(() => {
+  getAuthenticatedUserMock.mockResolvedValue(null)
 })
 
 describe('/api/generate-drills', () => {
+  it('applies Supabase cache-control headers when auth refresh writes them', async () => {
+    getAuthenticatedUserMock.mockImplementation(async (options?: { responseHeaders?: Headers }) => {
+      options?.responseHeaders?.set('Cache-Control', 'private, no-cache, no-store')
+      options?.responseHeaders?.set('Pragma', 'no-cache')
+
+      return {
+        userId: 'user-1',
+        email: 'learner@example.com',
+      }
+    })
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          drills: [],
+          model: 'openai/gpt-4o-mini',
+          elapsed_ms: 12,
+        }),
+        {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        },
+      ),
+    )
+
+    const res = await POST(
+      buildRequest(JSON.stringify({ mode: 'guided' }), {
+        ip: `10.0.9.${requestId()}`,
+        cookie: 'linguaflow_demo_sid=guest-123',
+      }),
+    )
+
+    expect(res.status).toBe(200)
+    expect(res.headers.get('Cache-Control')).toBe('private, no-cache, no-store')
+    expect(res.headers.get('Pragma')).toBe('no-cache')
+    expect(res.headers.get('Set-Cookie')).toBeNull()
+  })
+
   it('returns 400 for invalid JSON', async () => {
     const req = buildRequest('{"mode":', { ip: `10.0.0.${requestId()}` })
 
     const res = await POST(req)
 
     expect(res.status).toBe(400)
+    expect(res.headers.get('Set-Cookie')).toContain('linguaflow_demo_sid=')
     await expect(res.json()).resolves.toEqual({ error: 'Invalid JSON body' })
   })
 
@@ -125,6 +174,7 @@ describe('/api/generate-drills', () => {
     const res = await POST(req)
 
     expect(res.status).toBe(503)
+    expect(res.headers.get('Set-Cookie')).toContain('linguaflow_demo_sid=')
     await expect(res.json()).resolves.toEqual({ error: 'Model overloaded' })
   })
 })

@@ -3,12 +3,47 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import type { DrillItem, DrillResult, Language } from '@/lib/drills'
 import { LANGUAGES } from '@/lib/drills'
+import { getCoachReferenceTitle } from '@/lib/tutorMetadata'
+import { getClientAuthenticatedUser } from '@/lib/clientAuth'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 interface CoachMessage {
   role: 'user' | 'assistant'
   content: string
+  coachReferenceTitle?: string | null
+  // Phase 4: feedback metadata (grounded assistant messages only)
+  responseId?: string | null
+  route?: string | null
+  retrievedSources?: { id: string; title: string }[]
+  model?: string | null
+  userPrompt?: string | null
+}
+
+type FeedbackStatus = 'idle' | 'pending' | 'saved' | 'error'
+type FeedbackState = { status: FeedbackStatus; err?: string }
+
+async function submitFeedback(payload: {
+  responseId: string
+  surface: 'tutor'
+  mode: string
+  helpful: boolean
+  language: string
+  itemId: string
+  source: { id: string; title: string }
+  userPrompt: string | null
+  assistantMessage: string
+  model: string
+}): Promise<void> {
+  const res = await fetch('/api/ai-feedback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}))
+    throw new Error((data as { error?: string }).error ?? `HTTP ${res.status}`)
+  }
 }
 
 interface Props {
@@ -92,12 +127,14 @@ export default function DrillCoachPanel({
   const [feedbackError,     setFeedbackError]     = useState('')
 
   // coach tab state
-  const [messages,      setMessages]      = useState<CoachMessage[]>([])
-  const [inputVal,      setInputVal]      = useState('')
-  const [coachLoading,  setCoachLoading]  = useState(false)
-  const [coachError,    setCoachError]    = useState('')
-  const [hintLevel,     setHintLevel]     = useState(0)
-  const [streamingMsg,  setStreamingMsg]  = useState('')   // in-flight coach reply
+  const [messages,       setMessages]       = useState<CoachMessage[]>([])
+  const [inputVal,       setInputVal]       = useState('')
+  const [coachLoading,   setCoachLoading]   = useState(false)
+  const [coachError,     setCoachError]     = useState('')
+  const [hintLevel,      setHintLevel]      = useState(0)
+  const [streamingMsg,   setStreamingMsg]   = useState('')   // in-flight coach reply
+  const [feedbackStates, setFeedbackStates] = useState<Record<number, FeedbackState>>({})
+  const isAuthenticated = typeof window !== 'undefined' && getClientAuthenticatedUser() !== null
 
   const bottomRef  = useRef<HTMLDivElement>(null)
   const inputRef   = useRef<HTMLInputElement>(null)
@@ -115,6 +152,7 @@ export default function DrillCoachPanel({
     setMessages([])
     setHintLevel(0)
     setStreamingMsg('')
+    setFeedbackStates({})
     setMode('feedback')
 
     abortRef.current?.abort()
@@ -134,6 +172,9 @@ export default function DrillCoachPanel({
         itemsTotal: items.length,
       },
       currentItem: {
+        id:             currentItem.id,
+        category:       currentItem.category,
+        topic:          currentItem.topic,
         instruction:    currentItem.instruction,
         prompt:         currentItem.prompt,
         type:           currentItem.type,
@@ -200,6 +241,9 @@ export default function DrillCoachPanel({
         itemsTotal: items.length,
       },
       currentItem: {
+        id:             currentItem.id,
+        category:       currentItem.category,
+        topic:          currentItem.topic,
         instruction:    currentItem.instruction,
         prompt:         currentItem.prompt,
         type:           currentItem.type,
@@ -229,7 +273,24 @@ export default function DrillCoachPanel({
           setStreamingMsg(accumulated)
         },
         (meta) => {
-          setMessages(prev => [...prev, { role: 'assistant', content: accumulated }])
+          const isGrounded = meta.retrieval_hit === true
+            && Array.isArray(meta.retrieved_sources)
+            && (meta.retrieved_sources as { id: string; title: string }[]).length > 0
+          setMessages(prev => [
+            ...prev,
+            {
+              role: 'assistant',
+              content: accumulated,
+              coachReferenceTitle: getCoachReferenceTitle(meta),
+              responseId:       isGrounded ? (meta.response_id as string | null ?? null) : null,
+              route:            isGrounded ? (meta.route as string | null ?? null) : null,
+              retrievedSources: isGrounded
+                ? (meta.retrieved_sources as { id: string; title: string }[])
+                : undefined,
+              model:       model,
+              userPrompt:  trimmed,
+            },
+          ])
           setStreamingMsg('')
           setCoachLoading(false)
           if (typeof meta.hint_level === 'number') setHintLevel(meta.hint_level)
@@ -448,6 +509,86 @@ export default function DrillCoachPanel({
                     }}
                   >
                     {msg.content}
+                    {msg.role === 'assistant' && msg.coachReferenceTitle && (
+                      <div
+                        style={{
+                          marginTop: 8,
+                          paddingTop: 7,
+                          borderTop: '1px solid var(--border)',
+                          fontFamily: 'var(--font-manrope), sans-serif',
+                          fontSize: '0.6875rem',
+                          color: 'var(--text-3)',
+                        }}
+                      >
+                        Coach reference: {msg.coachReferenceTitle}
+                      </div>
+                    )}
+                    {msg.role === 'assistant'
+                      && isAuthenticated
+                      && msg.responseId
+                      && msg.retrievedSources && msg.retrievedSources.length > 0
+                      && (() => {
+                        const fbState = feedbackStates[i] ?? { status: 'idle' as FeedbackStatus }
+                        const fb = fbState.status
+                        const source = msg.retrievedSources![0]
+                        const sendFeedback = (helpful: boolean) => {
+                          if (fb !== 'idle') return
+                          setFeedbackStates(prev => ({ ...prev, [i]: { status: 'pending' } }))
+                          submitFeedback({
+                            responseId:       msg.responseId!,
+                            surface:          'tutor',
+                            mode:             msg.route ?? 'explain',
+                            helpful,
+                            language:         LANGUAGES[language]?.name ?? language,
+                            itemId:           currentItem.id,
+                            source:           { id: source.id, title: source.title },
+                            userPrompt:       msg.userPrompt ?? null,
+                            assistantMessage: msg.content,
+                            model:            msg.model ?? model,
+                          })
+                            .then(() => setFeedbackStates(prev => ({ ...prev, [i]: { status: 'saved' } })))
+                            .catch((e: unknown) => {
+                              const err = e instanceof Error ? e.message : 'Unknown error'
+                              setFeedbackStates(prev => ({ ...prev, [i]: { status: 'error', err } }))
+                            })
+                        }
+                        return (
+                          <div style={{ marginTop: 8, paddingTop: 7, borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                            {fb === 'saved' ? (
+                              <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '0.5625rem', color: 'var(--text-3)', letterSpacing: '0.06em' }}>
+                                Saved
+                              </span>
+                            ) : fb === 'error' ? (
+                              <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '0.5625rem', color: 'var(--incorrect)', letterSpacing: '0.06em' }} title={fbState.err}>
+                                Error saving{fbState.err ? ` — ${fbState.err}` : ''}
+                              </span>
+                            ) : (
+                              <>
+                                <span style={{ fontFamily: 'var(--font-jetbrains), monospace', fontSize: '0.5rem', color: 'var(--text-3)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                                  Helpful?
+                                </span>
+                                <button
+                                  disabled={fb === 'pending'}
+                                  onClick={() => sendFeedback(true)}
+                                  style={{ background: 'none', border: 'none', cursor: fb === 'pending' ? 'wait' : 'pointer', fontSize: '0.875rem', opacity: fb === 'pending' ? 0.4 : 1, padding: '0 2px' }}
+                                  title="Yes, helpful"
+                                >
+                                  👍
+                                </button>
+                                <button
+                                  disabled={fb === 'pending'}
+                                  onClick={() => sendFeedback(false)}
+                                  style={{ background: 'none', border: 'none', cursor: fb === 'pending' ? 'wait' : 'pointer', fontSize: '0.875rem', opacity: fb === 'pending' ? 0.4 : 1, padding: '0 2px' }}
+                                  title="Not helpful"
+                                >
+                                  👎
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        )
+                      })()
+                    }
                   </div>
                 </div>
               ))}

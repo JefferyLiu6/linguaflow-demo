@@ -1,29 +1,85 @@
-// Demo mode — auth is disabled; all functions are no-ops
+import { NextResponse } from 'next/server'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import { getSupabaseConfig } from '@/lib/supabase/config'
+import { applySupabaseResponseHeaders, createServerSupabaseClient } from '@/lib/supabase/server'
 
-export async function getSession(): Promise<null> {
-  return null
-}
-
-export async function setSessionCookie(
-  _userId: string,
-  _email: string,
-  _name?: string,
-): Promise<void> {
-  void [_userId, _email, _name]
-}
-
-export async function clearSessionCookie(): Promise<void> {}
-
-export async function signToken(_payload: {
+export interface AuthenticatedUser {
   userId: string
-  email: string
-  name?: string
-}): Promise<string> {
-  void _payload
-  return ''
+  email: string | null
 }
 
-export async function verifyToken(_token: string): Promise<null> {
-  void _token
-  return null
+interface AuthRequestOptions {
+  responseHeaders?: Headers
+}
+
+export function userFromClaims(
+  claims: Record<string, unknown> | null | undefined,
+): AuthenticatedUser | null {
+  if (!claims) {
+    return null
+  }
+
+  const userId = typeof claims.sub === 'string' ? claims.sub : null
+  if (!userId) {
+    return null
+  }
+
+  return {
+    userId,
+    email: typeof claims.email === 'string' ? claims.email : null,
+  }
+}
+
+export async function getAuthenticatedUserFromClient(
+  supabase: SupabaseClient,
+): Promise<AuthenticatedUser | null> {
+  const { data, error } = await supabase.auth.getClaims()
+  if (error) {
+    return null
+  }
+
+  return userFromClaims(data?.claims as Record<string, unknown> | undefined)
+}
+
+export async function getAuthenticatedUser(
+  options?: AuthRequestOptions,
+): Promise<AuthenticatedUser | null> {
+  if (!getSupabaseConfig()) {
+    return null
+  }
+
+  const supabase = await createServerSupabaseClient({
+    responseHeaders: options?.responseHeaders,
+  })
+  return getAuthenticatedUserFromClient(supabase)
+}
+
+export async function getAuthState(
+  options?: AuthRequestOptions,
+): Promise<{ user: AuthenticatedUser | null }> {
+  return { user: await getAuthenticatedUser(options) }
+}
+
+export function withAuthenticatedUser<TRequest extends Request = Request>(
+  handler: (request: TRequest, user: AuthenticatedUser) => Promise<Response>,
+) {
+  return async function authenticatedHandler(request: TRequest): Promise<Response> {
+    if (!getSupabaseConfig()) {
+      return NextResponse.json(
+        { error: 'Supabase auth is not configured.' },
+        { status: 503 },
+      )
+    }
+
+    const responseHeaders = new Headers()
+    const user = await getAuthenticatedUser({ responseHeaders })
+    if (!user) {
+      return applySupabaseResponseHeaders(
+        NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
+        responseHeaders,
+      )
+    }
+
+    return applySupabaseResponseHeaders(await handler(request, user), responseHeaders)
+  }
 }

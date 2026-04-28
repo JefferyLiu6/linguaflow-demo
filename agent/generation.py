@@ -59,19 +59,59 @@ class GenerateResponse(BaseModel):
 SYSTEM_PROMPT = """You are a LinguaFlow language drill generator.
 Output ONLY a valid JSON array — no markdown fences, no explanation, no preamble.
 Each object must have exactly these fields:
-  "prompt"      : string  — the English cue shown to the learner
-  "answer"      : string  — the expected target-language response
+  "prompt"      : string  — the cue shown to the learner
+  "answer"      : string  — the expected correct response
   "type"        : "translation" | "substitution" | "transformation"
   "instruction" : string  — one short imperative sentence describing the task
 
-Example (Spanish):
-[{"prompt":"Where is the hotel?","answer":"¿Dónde está el hotel?","type":"translation","instruction":"Translate to Spanish."}]"""
+## Difficulty levels — strictly enforced
+
+A1-A2 Beginner: everyday concrete nouns and high-frequency verbs only (eat, go, have, want).
+  Simple present or present continuous. Short sentences (≤8 words). No idioms or phrasal verbs.
+  Example answer: "Quiero un café." / "I want a coffee."
+
+B1-B2 Intermediate: common idiomatic phrases, phrasal verbs, modal verbs, relative clauses.
+  Varied tenses (past, future, conditional). Sentences 8–15 words.
+  Example answer: "Si tuviera más tiempo, estudiaría más." / "I should have known better."
+
+C1 Advanced: low-frequency vocabulary, nuanced register differences, complex subordinate clauses,
+  subjunctive, passive constructions, collocations. Sentences 12–20 words.
+  Example answer: "De haberlo sabido, habría actuado de otra manera." / "The findings corroborate the hypothesis."
+
+C2 Native: rare or literary vocabulary, idiomatic subtleties, ellipsis, inversion, stylistic variation.
+  Sentences that mirror authentic journalistic or literary prose.
+  Example answer: "No sooner had she arrived than the meeting was adjourned." / "His reticence belied a deep unease."
+
+You MUST calibrate every prompt and answer to the requested difficulty. Do not mix levels across drills.
+
+## Language-specific rules
+
+For non-English target languages: the prompt is an English cue and the answer is in the target language.
+Example (Spanish B1): [{"prompt":"If I had more time, I would study more.","answer":"Si tuviera más tiempo, estudiaría más.","type":"translation","instruction":"Translate to Spanish."}]
+
+For English as the target language: drills test vocabulary precision and register.
+- substitution: prompt is a casual/imprecise word or phrase, answer is the precise formal equivalent
+- transformation: prompt is an informal sentence, answer is the formal rewrite
+- translation is NOT used for English — use substitution or transformation only
+Example (English C1): [{"prompt":"The project was very [big].","answer":"substantial","type":"substitution","instruction":"Replace the bracketed word with a more precise C1 synonym."}]"""
 
 TOPIC_MAP = {
-    "daily":    "Daily Life",
-    "tech":     "Technical / Engineering",
-    "finance":  "Financial Arbitrage",
-    "business": "General Business",
+    "travel":    "Travel",
+    "daily":     "Daily Life",
+    "food":      "Food & Dining",
+    "sport":     "Sport & Fitness",
+    "tech":      "Technology",
+    "work":      "Work & Business",
+    "health":    "Health & Medicine",
+    "money":     "Finance & Money",
+    "family":    "Family & Relationships",
+    "nature":    "Nature & Environment",
+    "education": "Education & Learning",
+    "culture":   "Culture & Arts",
+    "politics":  "Politics & Society",
+    "science":   "Science & Research",
+    "shopping":  "Shopping & Commerce",
+    "emergency": "Emergency & Safety",
 }
 DIFF_MAP = {
     "a1": "Beginner A1-A2",
@@ -92,11 +132,20 @@ GRAMMAR_MAP = {
 
 def build_guided_prompt(req: GenerateRequest) -> str:
     g = req.guided
+    is_english = req.language.strip().lower() == "english"
+    if is_english:
+        drill_type_line = "substitution and transformation (no translation drills — use substitution or transformation only)"
+    else:
+        drill_type_line = g.drill_type
+    diff_label = DIFF_MAP.get(g.difficulty, g.difficulty)
+    topic_line = f"Topic: {TOPIC_MAP.get(g.topic, g.topic)}\n" if g.topic else ""
     return (
-        f"Generate exactly {req.count} {req.language} {g.drill_type} drills.\n"
-        f"Topic: {TOPIC_MAP.get(g.topic, g.topic)}\n"
-        f"Difficulty: {DIFF_MAP.get(g.difficulty, g.difficulty)}\n"
-        f"Grammatical focus: {GRAMMAR_MAP.get(g.grammar, g.grammar)}"
+        f"Generate exactly {req.count} {req.language} {drill_type_line} drills "
+        f"strictly at difficulty level {diff_label}.\n"
+        f"{topic_line}"
+        f"Grammatical focus: {GRAMMAR_MAP.get(g.grammar, g.grammar)}\n"
+        f"Every drill MUST use vocabulary, sentence length, and grammatical complexity "
+        f"appropriate for {diff_label}."
     )
 
 

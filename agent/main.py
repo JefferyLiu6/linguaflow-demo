@@ -22,7 +22,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config import DEFAULT_MODEL, OLLAMA_BASE
 from generation import router as gen_router
+from planner.router import router as planner_router
 from providers import available_providers
+from study_assist.router import router as study_assist_router
 from tutor.graph import router as tutor_router
 
 # ── App ───────────────────────────────────────────────────────────────────────
@@ -38,6 +40,8 @@ app.add_middleware(
 
 app.include_router(gen_router)
 app.include_router(tutor_router)
+app.include_router(planner_router)
+app.include_router(study_assist_router)
 
 
 # ── Health ────────────────────────────────────────────────────────────────────
@@ -47,7 +51,7 @@ app.include_router(tutor_router)
 def health():
     return {
         "status":            "ok",
-        "capabilities":      ["generate", "tutor"],
+        "capabilities":      ["generate", "tutor", "plan-session", "study-assist"],
         "default_model":     DEFAULT_MODEL,
         "providers":         available_providers(),
         "ollama_base":       OLLAMA_BASE,

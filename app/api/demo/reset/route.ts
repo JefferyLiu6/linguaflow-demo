@@ -3,6 +3,21 @@ import { checkRateLimit, getIp, tooManyRequests } from '@/lib/rateLimit'
 import { getOrCreateDemoSession } from '@/lib/demoSession'
 import { RATE_LIMIT } from '@/lib/rateLimitConfig'
 
+function appendSetCookieHeader(response: Response, setCookieHeader?: string): Response {
+  if (!setCookieHeader) {
+    return response
+  }
+
+  const headers = new Headers(response.headers)
+  headers.append('Set-Cookie', setCookieHeader)
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  })
+}
+
 // Demo utility endpoint: resets client UX state only.
 // It intentionally does NOT clear server-side quotas.
 export async function POST(req: Request) {
@@ -14,9 +29,7 @@ export async function POST(req: Request) {
     RATE_LIMIT.windows.resetBurstMs,
   )
   if (!burst.ok) {
-    const res = tooManyRequests(burst.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
+    return appendSetCookieHeader(tooManyRequests(burst.retryAfter), setCookieHeader)
   }
   const dailySession = checkRateLimit(
     `reset:s:d:${sessionId}`,
@@ -24,9 +37,7 @@ export async function POST(req: Request) {
     RATE_LIMIT.windows.dayMs,
   )
   if (!dailySession.ok) {
-    const res = tooManyRequests(dailySession.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
+    return appendSetCookieHeader(tooManyRequests(dailySession.retryAfter), setCookieHeader)
   }
   const dailyIp = checkRateLimit(
     `reset:ip:d:${ip}`,
@@ -34,12 +45,11 @@ export async function POST(req: Request) {
     RATE_LIMIT.windows.dayMs,
   )
   if (!dailyIp.ok) {
-    const res = tooManyRequests(dailyIp.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
+    return appendSetCookieHeader(tooManyRequests(dailyIp.retryAfter), setCookieHeader)
   }
 
-  const res = NextResponse.json({ ok: true, clearedBuckets: 0 })
-  if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-  return res
+  return appendSetCookieHeader(
+    NextResponse.json({ ok: true, clearedBuckets: 0 }),
+    setCookieHeader,
+  )
 }

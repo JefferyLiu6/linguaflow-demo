@@ -41,11 +41,13 @@ jobs:
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: End-to-end test
+      - name: End-to-end test (guest mode)
         run: pnpm test:e2e
+        # E2E_AUTH_EMAIL / E2E_AUTH_PASSWORD are NOT set in CI by default.
+        # The authenticated-flow spec skips itself when those vars are absent.
 
   python:
-    name: Python syntax check
+    name: Python agent tests
     runs-on: ubuntu-latest
 
     steps:
@@ -60,11 +62,8 @@ jobs:
       - name: Install agent dependencies
         run: pip install -r agent/requirements.txt
 
-      - name: Syntax check
-        run: |
-          python -m py_compile agent/main.py
-          python -m py_compile agent/config.py
-          python -m py_compile agent/generation.py
-          python -m py_compile agent/tutor/schemas.py
-          python -m py_compile agent/tutor/nodes.py
-          python -m py_compile agent/tutor/graph.py
+      - name: Run agent test suite
+        working-directory: agent
+        run: python -m pytest tests/ -q --tb=short
+        # Tests mock all external services (LLM, DB, Langfuse) and run offline.
+        # No OPENAI_API_KEY, DATABASE_URL, or LANGFUSE_* keys are needed.

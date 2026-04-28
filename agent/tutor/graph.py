@@ -103,6 +103,7 @@ async def tutor_endpoint(req: TutorRequest):
     # Flatten Pydantic models to plain dicts for LangGraph state
     initial: TutorState = {
         "model_name":        req.model,
+        "request_id":        req.request_id,
         "session_context":   req.session_context.model_dump(),
         "current_item":      req.current_item.model_dump(),
         "recent_items":      [r.model_dump() for r in req.recent_items],
@@ -112,6 +113,7 @@ async def tutor_endpoint(req: TutorRequest):
         "hint_level":        req.constraints.current_hint_level,
         "assistant_message": "",
         "structured_data":   {},
+        "retrieval_debug":   None,
     }
 
     try:
@@ -135,6 +137,8 @@ async def tutor_endpoint(req: TutorRequest):
             hint_level=sd.get("hint_level"),
             suggested_phrase=sd.get("suggested_phrase"),
             learner_ready=sd.get("learner_ready"),
+            retrieval_hit=sd.get("retrieval_hit"),
+            retrieved_sources=sd.get("retrieved_sources"),
         )
         if any(v is not None for v in sd.values())
         else None
@@ -148,6 +152,7 @@ async def tutor_endpoint(req: TutorRequest):
         structured=structured,
         model=req.model,
         elapsed_ms=elapsed,
+        response_id=req.request_id,
     )
 
 
@@ -157,6 +162,7 @@ async def tutor_endpoint(req: TutorRequest):
 def _build_state(req: TutorRequest) -> TutorState:
     return {
         "model_name":        req.model,
+        "request_id":        req.request_id,
         "session_context":   req.session_context.model_dump(),
         "current_item":      req.current_item.model_dump(),
         "recent_items":      [r.model_dump() for r in req.recent_items],
@@ -166,6 +172,7 @@ def _build_state(req: TutorRequest) -> TutorState:
         "hint_level":        req.constraints.current_hint_level,
         "assistant_message": "",
         "structured_data":   {},
+        "retrieval_debug":   None,
     }
 
 
@@ -207,7 +214,17 @@ async def tutor_stream_endpoint(req: TutorRequest):
                     yield f"data: {json.dumps({'token': token})}\n\n"
 
                 new_hint = state.get("hint_level", 0) + (1 if route == "hint" else 0)
-                yield f"data: {json.dumps({'done': True, 'route': route, 'hint_level': new_hint})}\n\n"
+                done_payload: dict[str, Any] = {
+                    "done": True,
+                    "route": route,
+                    "hint_level": new_hint,
+                }
+                if req.request_id:
+                    done_payload["response_id"] = req.request_id
+                if state.get("structured_data", {}).get("retrieval_hit"):
+                    done_payload["retrieval_hit"] = True
+                    done_payload["retrieved_sources"] = state["structured_data"].get("retrieved_sources", [])
+                yield f"data: {json.dumps(done_payload)}\n\n"
 
         except HTTPException as exc:
             yield f"data: {json.dumps({'error': exc.detail})}\n\n"

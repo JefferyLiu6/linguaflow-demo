@@ -1,0 +1,32 @@
+<svg width="184" height="36" viewBox="0 0 184 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Mark: 36×36 dark green rounded square -->
+  <rect width="36" height="36" rx="8" fill="#1F5C3A"/>
+  <!-- Didot-style L: thick vertical, thin horizontal arm -->
+  <path d="M 9 10 L 14.5 10 L 14.5 23.5 L 26.5 23.5 L 26.5 27.5 L 9 27.5 Z" fill="white"/>
+  <!-- Top cap serif -->
+  <rect x="7" y="7.5" width="9" height="2.5" rx="1" fill="white"/>
+  <!-- Bottom-right serif nub -->
+  <rect x="23.5" y="27.5" width="4.5" height="1.5" rx="0.75" fill="white"/>
+
+  <!-- Wordmark: "Lingua" roman · "Flow." italic green -->
+  <!-- Using Georgia as the closest web-safe serif approximation of Fraunces -->
+  <text
+    x="48"
+    y="24.5"
+    fill="#0B1E12"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="17.5"
+    font-weight="700"
+    letter-spacing="-0.3"
+  >Lingua</text>
+  <text
+    x="113"
+    y="24.5"
+    fill="#1F5C3A"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="17.5"
+    font-weight="700"
+    font-style="italic"
+    letter-spacing="-0.3"
+  >Flow.</text>
+</svg>

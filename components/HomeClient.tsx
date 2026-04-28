@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { loadSessions, computeStats, loadLanguage, saveLanguage } from '@/lib/stats'
+import {
+  computeStats,
+  ignoreClientAuthExpiredError,
+  loadLanguage,
+  loadSessions,
+  saveLanguage,
+} from '@/lib/stats'
 import { LANGUAGES } from '@/lib/drills'
 import type { Language } from '@/lib/drills'
 
@@ -104,16 +110,21 @@ export default function HomeClient() {
   const [language, setLanguage] = useState<Language>('es')
 
   useEffect(() => {
-    loadSessions().then(sessions => {
-      const s = computeStats(sessions)
-      if (s) setStats({ sessions: s.sessions, accuracy: s.accuracy, total: s.total, avgTime: s.avgTime })
-    })
-    loadLanguage().then(l => setLanguage(l))
+    loadSessions()
+      .then((sessions) => {
+        const s = computeStats(sessions)
+        if (s) setStats({ sessions: s.sessions, accuracy: s.accuracy, total: s.total, avgTime: s.avgTime })
+      })
+      .catch(ignoreClientAuthExpiredError)
+
+    loadLanguage()
+      .then((value) => setLanguage(value))
+      .catch(ignoreClientAuthExpiredError)
   }, [])
 
   const handleLanguageSelect = (lang: Language) => {
     setLanguage(lang)
-    saveLanguage(lang)
+    void saveLanguage(lang).catch(ignoreClientAuthExpiredError)
   }
 
   return (
@@ -149,16 +160,19 @@ export default function HomeClient() {
               <h1
                 className="reveal reveal-2"
                 style={{
-                  fontFamily: 'var(--font-fraunces), sans-serif',
-                  fontWeight: 600,
-                  fontSize: 'clamp(1.875rem, 3vw, 2.5rem)',
-                  lineHeight: 1.18,
-                  letterSpacing: '-0.03em',
-                  color: 'var(--text-1)',
+                  fontFamily: 'var(--font-fraunces), serif',
+                  fontWeight: 700,
+                  fontSize: 'clamp(2.5rem, 4.5vw, 3.5rem)',
+                  lineHeight: 1.12,
+                  letterSpacing: '-0.01em',
+                  color: '#0B1E12',
                   marginBottom: 20,
                 }}
               >
-                Language training<br />with no accommodation.
+                Language training{' '}
+                <span style={{ fontStyle: 'italic', color: '#1F5C3A' }}>
+                  with no accommodation.
+                </span>
               </h1>
 
               <p
@@ -179,21 +193,7 @@ export default function HomeClient() {
               </p>
 
               <div className="reveal reveal-4" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                <Link
-                  href="/drill"
-                  style={{
-                    display: 'inline-block',
-                    background: 'var(--text-1)',
-                    color: 'var(--bg)',
-                    fontFamily: 'var(--font-manrope), sans-serif',
-                    fontWeight: 600,
-                    fontSize: '0.875rem',
-                    padding: '11px 24px',
-                    textDecoration: 'none',
-                    borderRadius: 4,
-                    letterSpacing: '-0.01em',
-                  }}
-                >
+                <Link href="/drill" className="btn-primary">
                   Begin Training
                 </Link>
                 <Link
@@ -223,18 +223,9 @@ export default function HomeClient() {
       </section>
 
       {/* ── Language selector ─────────────────────────────────────── */}
-      <section className="bg-white" style={{ borderBottom: '1px solid var(--border)' }}>
+      <section style={{ background: 'var(--bg)', borderBottom: '1px solid #E2DDD8' }}>
         <div className="mob-section-pad" style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 32px' }}>
-          <div
-            style={{
-              fontFamily: 'var(--font-jetbrains), monospace',
-              fontSize: '0.6875rem',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#374151',
-              marginBottom: 20,
-            }}
-          >
+          <div style={{ fontFamily: 'var(--font-manrope), sans-serif', fontWeight: 700, fontSize: 11, letterSpacing: '1.2px', textTransform: 'uppercase', color: '#4A5A50', marginBottom: 20 }}>
             Target Language
           </div>
           <div className="grid grid-cols-4 gap-3 mob-lang-grid">
@@ -244,40 +235,21 @@ export default function HomeClient() {
                 <button
                   key={code}
                   onClick={() => handleLanguageSelect(code)}
-                  className={`flex flex-col bg-white rounded-lg transition-all duration-200 cursor-pointer text-left ${
-                    active
-                      ? 'border-2 border-gray-900 shadow-md'
-                      : 'border border-gray-200 shadow-sm hover:border-gray-400 hover:shadow-md'
-                  }`}
                   style={{
-                    color: active ? 'var(--text-1)' : 'var(--text-2)',
-                    padding: active ? '19px 23px' : '20px 24px',
-                    gap: 6,
-                    display: 'flex',
-                    flexDirection: 'column',
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '14px 16px',
+                    background: 'white', borderRadius: 12,
+                    border: '1px solid #E2DDD8',
+                    cursor: 'pointer', textAlign: 'left',
+                    transition: 'border-color 0.15s',
+                    fontFamily: 'var(--font-manrope), sans-serif',
                   }}
                 >
-                  <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{info.flag}</span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-manrope), sans-serif',
-                      fontWeight: active ? 700 : 500,
-                      fontSize: '0.9375rem',
-                      color: active ? 'var(--text-1)' : 'var(--text-2)',
-                    }}
-                  >
-                    {info.native}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-manrope), sans-serif',
-                      fontWeight: 400,
-                      fontSize: '0.75rem',
-                      color: '#6B7280',
-                    }}
-                  >
-                    {info.name}
-                  </span>
+                  <span style={{ fontSize: '1.25rem', lineHeight: 1, flexShrink: 0 }}>{info.flag}</span>
+                  <span style={{ fontWeight: 600, fontSize: 14, color: '#0B1E12' }}>{info.native}</span>
+                  <span style={{ fontSize: 13, color: '#4A5A50', fontWeight: 400 }}>{info.name}</span>
+                  <span style={{ flex: 1 }} />
+                  {active && <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#1F5C3A', flexShrink: 0, display: 'inline-block' }} />}
                 </button>
               )
             })}
@@ -473,22 +445,7 @@ export default function HomeClient() {
                 Begin a session now. Results tracked automatically.
               </div>
             </div>
-            <Link
-              href="/drill"
-              style={{
-                display: 'inline-block',
-                background: 'var(--text-1)',
-                color: 'var(--bg)',
-                fontFamily: 'var(--font-manrope), sans-serif',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                padding: '11px 24px',
-                textDecoration: 'none',
-                borderRadius: 4,
-                flexShrink: 0,
-                letterSpacing: '-0.01em',
-              }}
-            >
+            <Link href="/drill" className="btn-primary" style={{ flexShrink: 0 }}>
               Begin Training
             </Link>
           </div>

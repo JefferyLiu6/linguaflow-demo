@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
+import { getAuthState } from '@/lib/auth'
+import { applySupabaseResponseHeaders } from '@/lib/supabase/server'
 
-// Demo mode — no auth; always returns null so the Nav shows no user
 export async function GET() {
-  return NextResponse.json(null)
+  const responseHeaders = new Headers()
+  const { user } = await getAuthState({ responseHeaders })
+  return applySupabaseResponseHeaders(NextResponse.json(user), responseHeaders)
 }

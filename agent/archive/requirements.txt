@@ -1,0 +1,13 @@
+fastapi>=0.115
+python-dotenv>=1.0
+uvicorn[standard]>=0.32
+langchain-core>=0.3
+pydantic>=2.0
+langgraph>=0.2
+
+# LLM providers — install all; each is only imported when its key is present
+langchain-ollama>=0.2
+langchain-openai>=0.2
+langchain-anthropic>=0.3
+langchain-google-genai>=2.0
+langchain-groq>=0.2

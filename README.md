@@ -4,36 +4,152 @@
 [![Next.js](https://img.shields.io/badge/next.js-16-black?logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/react-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/typescript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Node.js](https://img.shields.io/badge/node.js-20%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![pnpm](https://img.shields.io/badge/pnpm-package%20manager-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 
-> **Live demo:** https://linguaflow-demo.vercel.app · [Walkthrough video](#) _(placeholder)_
+> **Live demo:** https://linguaflow-demo.vercel.app
 
-Try it out: https://linguaflow-demo.vercel.app
+LinguaFlow is a full-stack AI language-learning system built as a portfolio project. It combines timed drills, a LangGraph-orchestrated tutor, a session planner, a retrieval-augmented coaching layer (metadata + pgvector hybrid), a Study-mode assistant, and a helpfulness-feedback loop — all wired together across a Next.js web app, a FastAPI agent, Supabase Auth, and Postgres.
 
-LinguaFlow is a product-style language learning demo that combines timed drills, route-aware AI coaching, and progress tracking.
-The current public checkout runs in demo mode: learner progress, language preference, and custom lists are stored in the browser, while the optional Python agent powers drill generation and tutoring.
+---
 
-## Key Highlights
+## Review this project in 5 minutes
 
-- **Product scope**: timed drills, custom lists, dashboard analytics, and coaching workflows.
-- **AI architecture**: FastAPI agent + LangGraph routing + deterministic JSON handling.
-- **System design**: typed Next.js <-> Python API bridge with clear service boundaries.
-- **Engineering quality**: CI checks for lint, type safety, tests, build, and Python syntax.
+**Fastest path (no account needed):**
 
-## Current Demo Mode
+1. Go to https://linguaflow-demo.vercel.app
+2. Click **Begin Training** → choose English → run a 4-item session
+3. On the Results screen, look at the **Next session recommendation** (planner)
+4. Click a drill item → open the **Coach** tab → ask "Explain this" → look for the **Coach reference** label
 
-- **No account required**: auth is disabled in this public demo checkout.
-- **Per-browser progress**: sessions, selected language, and custom drill lists are stored in `localStorage`.
-- **Every fresh page load resets demo state**: opening or reloading the app clears stored sessions, language preference, and custom lists so each demo run starts clean.
-- **Optional AI backend**: `/api/generate-drills` and `/api/tutor*` proxy to the Python agent when it is running.
-- **Prisma schema retained for reference**: the repo still includes the earlier Prisma data model, but the current demo build does not use it at runtime.
+**Authenticated path (planner + RAG + feedback loop):**
 
-## Animated Demo
+1. Sign in with the reviewer account:
+   - Email: `reviewer@linguaflow.demo`
+   - Password: `LinguaFlow2026!`
+2. The dashboard loads with 12 pre-seeded sessions — the planner fires immediately
+3. Run an English session → Results → see the AI-generated session plan
+4. Open Coach on an English card → ask "Explain this" or "Why is this wrong?" → grounded reply with **Coach reference** and 👍/👎
+5. Visit **Study** on an English card → click "Explain card" or "What contrast is this?" → grounded reply with **Study reference** and 👍/👎
+6. Click 👍 or 👎 — feedback persists to the database and is reportable
+
+---
+
+## System architecture
+
+LinguaFlow is split across four layers: Next.js (UI + API routes), Supabase Auth + Postgres (persistence), a FastAPI Python agent (LLM logic, LangGraph, RAG), and an optional Langfuse trace sink.
+
+```mermaid
+flowchart LR
+  subgraph browser["Browser"]
+    UI["Next.js App Router\nReact 19"]
+  end
+
+  subgraph next["Next.js Server (Vercel)"]
+    API["Route Handlers /api/*"]
+    AUTH["Supabase SSR Session"]
+    RLIMIT["Rate Limiting\n(session · IP · global)"]
+  end
+
+  subgraph data["Supabase / Postgres"]
+    SUPA["Supabase Auth"]
+    DB[("Postgres + Prisma\nDrillSession · CustomList\nUserSettings · AiResponseFeedback\nretrival_doc (pgvector)")]
+  end
+
+  subgraph agent["Python Agent (Render)"]
+    FASTAPI["FastAPI :8000"]
+
+    subgraph tutor["Tutor — LangGraph"]
+      ROUTER["Router node\nhint · socratic · explain\nclarify · ready_check"]
+      RAG1["Metadata + hybrid\nRAG retrieval"]
+      TRACE1["Langfuse trace\nrequest_id linked"]
+    end
+
+    subgraph study["Study assist"]
+      STUDY_RT["study_assist router\nexplain · similar · what_contrast\nfreeform_help (hybrid)"]
+      RAG2["Metadata + hybrid\nRAG retrieval"]
+      TRACE2["Langfuse trace\nrequest_id linked"]
+    end
+
+    subgraph planner["Planner"]
+      PLAN_RT["plan_session endpoint\nLLM + heuristic fallback"]
+    end
+
+    CORPUS["Contrast-note corpus\n31 English notes\nknowledge/en/contrasts.jsonl"]
+    PVEC["pgvector index\ntext-embedding-3-small\n1536d"]
+    PROVIDERS["LLM providers\nOpenAI · Anthropic\nGoogle · Groq · Ollama"]
+  end
+
+  UI --> API
+  API --> AUTH --> SUPA
+  API --> DB
+  API --> RLIMIT
+  API -->|"/api/tutor/stream\n/api/tutor"| FASTAPI
+  API -->|"/api/study-assist"| FASTAPI
+  API -->|"/api/plan-session"| FASTAPI
+  API -->|"/api/generate-drills"| FASTAPI
+  API -->|"POST /api/ai-feedback"| DB
+
+  FASTAPI --> ROUTER --> RAG1 --> CORPUS
+  RAG1 --> PVEC
+  RAG1 --> TRACE1
+  FASTAPI --> STUDY_RT --> RAG2 --> CORPUS
+  RAG2 --> PVEC
+  RAG2 --> TRACE2
+  FASTAPI --> PLAN_RT
+  ROUTER --> PROVIDERS
+  STUDY_RT --> PROVIDERS
+  PLAN_RT --> PROVIDERS
+```
+
+---
+
+## Feature highlights
+
+### 1. Contrastive RAG (Tutor + Study, Phase 1–3)
+
+The tutor's `explain` and `clarify` routes, and the Study assistant's four actions, are grounded by a curated 31-note English contrast corpus. Retrieval is metadata-first (drill `id`, `type`, `category`, `topic`, taxonomy tags, authoring item IDs); when the metadata score is below a strong-hit threshold (8), the system runs a hybrid pgvector rerank (0.6 × vector + 0.4 × normalized metadata).
+
+The frontend surfaces grounding lightly: a "Coach reference" or "Study reference" label shows the matched note title. The full trace is recorded in Langfuse with the same `request_id` that flows back to the UI as `responseId`, so every grounded reply can be joined to its retrieval trace.
+
+**Retrieval eval results** (31-case metadata harness, 25-case freeform harness):
+
+| metric | metadata baseline | hybrid (freeform) |
+|---|---|---|
+| hit rate | 0.90 | — |
+| exact note match | 0.94 | — |
+| true no-hit rate | 1.00 | — |
+| false positive rate | 0.00 | — |
+| freeform exact match | — | +12 pp vs metadata |
+
+### 2. Session planner (Phase 1)
+
+After each English session, the Results screen shows an AI-generated plan card recommending what to practice next, with a confidence score and fallback to a deterministic heuristic when the LLM output is below threshold (0.85, calibrated from a 30-case eval sweep). The planner uses the last 5 sessions and the full English taxonomy as context.
+
+### 3. Helpfulness feedback loop (Phase 4)
+
+Authenticated users can rate any grounded Tutor or Study reply as 👍 or 👎. The rating is persisted in `AiResponseFeedback` and linkable to the Langfuse trace via `responseId = request_id`, enabling the full proof loop:
+
+```
+learner clicks 👎
+  → AiResponseFeedback row: { sourceId, surface, mode, responseId }
+  → Langfuse trace filtered by request_id: what note was retrieved, why
+  → fix note's when_to_use or tags
+  → re-run eval → helpful rate improves
+```
+
+Internal report: `DATABASE_URL=... npx tsx scripts/feedback-report.ts`
+
+### 4. LangGraph tutor orchestration
+
+The tutor uses a router-plus-specialist graph. The router classifies learner intent into one of five routes; LangGraph conditional edges dispatch to the matching specialist node. Each node applies route-specific prompting policy. The streaming path (`/tutor/stream`) reuses the same router and specialists but delivers incremental SSE tokens.
+
+---
+
+## Animated demo
 
 ![LinguaFlow animated demo](docs/demo/linguaflow-demo.gif)
+
+---
 
 ## Screenshots
 
@@ -43,387 +159,261 @@ The current public checkout runs in demo mode: learner progress, language prefer
 **Drill feedback + AI Tutor coaching exchange**
 ![Drill feedback and tutor](docs/screenshots/drill-feedback.png)
 
-**AI Drill Generation — raw prompt mode with live preview**
-![Drill generation](docs/screenshots/drill-generation.png)
-
-**Results dashboard** — rolling accuracy, response time, training intensity heatmap
+**Dashboard — rolling accuracy, response time, training intensity heatmap**
 ![Dashboard](docs/screenshots/dashboard.png)
 
-## System Architecture
+> Screenshots showing the planner card (Results screen), grounded Study reply with helpfulness feedback, and a grounded Tutor reply with the Coach reference label are pending capture from the live deployment.
 
-LinguaFlow is split into two active runtime layers plus one dormant reference layer: a Next.js app for UI and route handlers, browser-side demo persistence via `localStorage`, and an optional FastAPI AI service for drill generation and tutoring.
-The repo also retains a Prisma schema from an earlier iteration, but that persistence layer is not active in the current public demo build.
+---
 
-```mermaid
-flowchart LR
-  subgraph browser["Browser"]
-    UI[Next.js App Router + React]
-  end
+## Iteration history
 
-  subgraph next["Next.js Server"]
-    API[Route Handlers /api/*]
-    DEMO[Demo Session Cookie + Rate Limits]
-  end
+### Phase 1 — Timing + core loop
+Implemented the strict drill loop (20s timer, submit/skip/timeout, immediate feedback, session scoring). Validated UX mechanics before adding architecture complexity.
 
-  subgraph browserdata["Browser Storage"]
-    LS[localStorage\nsessions · language · custom list]
-  end
+### Phase 2 — Data contracts + Prisma persistence
+Added typed Next.js API routes and Prisma models (`DrillSession`, `CustomList`, `UserSettings`). Decoupled UI from data logic; established stable request/response contracts.
 
-  subgraph refdata["Reference Layer: inactive in demo"]
-    DB[(Prisma Schema)]
-  end
+### Phase 3 — Isolated FastAPI generation service
+Introduced a separate FastAPI service with guided/raw generation modes, JSON extraction, and output filtering. AI failures are isolated from the web app.
 
-  subgraph agent["LinguaFlow Agent: Optional"]
-    FASTAPI[FastAPI Service :8000]
-    GEN[Generation Endpoint /generate]
-    TUTOR_API[Tutor Endpoint /tutor]
-    TUTOR_STREAM["Tutor Stream /tutor/stream (SSE)"]
-    subgraph tutor["Tutor Graph: LangGraph"]
-      ROUTER[Router Node]
-      HINT[Hint]
-      SOCRATIC[Socratic]
-      EXPLAIN[Explain]
-      CLARIFY[Clarify]
-      READY[Ready Check]
-    end
-    PROVIDERS[Provider-backed LLMs\nOpenAI · Anthropic · Google · Groq · Ollama]
-  end
+### Phase 4 — LangGraph tutor routing
+Replaced one-shot tutoring with LangGraph routing (5 specialist nodes, hint-level state, structured JSON output with fallback). Makes tutor behavior controllable and debuggable.
 
-  UI --> API
-  UI --> LS
-  API --> DEMO
-  API -->|/api/generate-drills| FASTAPI
-  API -->|/api/tutor| FASTAPI
-  API -->|/api/tutor/stream| FASTAPI
-  FASTAPI --> GEN
-  FASTAPI --> TUTOR_API
-  FASTAPI --> TUTOR_STREAM
-  FASTAPI --> ROUTER
-  ROUTER --> HINT
-  ROUTER --> SOCRATIC
-  ROUTER --> EXPLAIN
-  ROUTER --> CLARIFY
-  ROUTER --> READY
-  GEN --> PROVIDERS
-  HINT --> PROVIDERS
-  SOCRATIC --> PROVIDERS
-  EXPLAIN --> PROVIDERS
-  CLARIFY --> PROVIDERS
-  READY --> PROVIDERS
+### Phase 5 — Auth, reliability, and security hardening
+Added Supabase Auth + Postgres persistence, JWT-cookie session handling, protected data routes, turn caps, input validation, and clearer upstream error mapping.
+
+### Phase 6 — SSE streaming + deployment prep
+Added `/tutor/stream` SSE endpoint. Streaming path reuses router + specialist policies and delivers incremental tokens with runtime metadata (`route`, `hint_level`, `elapsed_ms`).
+
+### Phase 7 — Contrastive RAG (metadata, Phase 1a/1b)
+Built a 31-note English contrast corpus and a metadata-first retrieval scorer (drill id, type, category, topic, taxonomy tags, authoring item IDs). Added a 31-case eval harness with per-bucket metrics. Grounded `explain` and `clarify` routes. Added `Coach reference` label to the tutor panel.
+
+### Phase 8 — Session planner
+Added `POST /plan-session` and the LangGraph planner graph (LLM plan + heuristic fallback + confidence threshold). Planner card appears on Results after each English session.
+
+### Phase 9 — Study mode + Study-assist RAG
+Added the Study screen (card flip, progress tracking) and the `/study-assist` endpoint with four actions (`explain_card`, `show_similar_examples`, `what_contrast_is_this`, `freeform_help`). Study-mode RAG reuses the Phase 7 corpus.
+
+### Phase 10 — Hybrid pgvector retrieval (Phase 3)
+Added `text-embedding-3-small` embeddings, a pgvector `retrieval_doc` table, offline sync (`python -m retrieval.sync_embeddings`), and hybrid reranking (0.6 × vector + 0.4 × normalized metadata). Freeform help uses vector-first retrieval. 25-case freeform eval harness with head-to-head metadata vs hybrid comparison.
+
+### Phase 11 — Helpfulness feedback loop (Phase 4)
+Added `response_id` plumbing (`Next.js → Python → SSE done event`), `AiResponseFeedback` model, `POST /api/ai-feedback`, and inline 👍/👎 controls on grounded replies. Feedback rows are linkable to Langfuse traces via `responseId`.
+
+### Phase 12 — Portfolio packaging (Phase 5)
+Reviewer-oriented README, deployment runbook, seed/reset script for the shared demo account, and CI upgrade from per-file `py_compile` to `pytest`.
+
+---
+
+## API surface (web layer)
+
+| Method | Path | Purpose | Auth |
+|---|---|---|---|
+| POST | `/api/register` | Create account + issue Supabase session | Open |
+| POST | `/api/auth/login` | Sign in + issue Supabase session | Open |
+| POST | `/api/auth/logout` | Clear Supabase auth cookies | Signed-in |
+| GET | `/api/auth/me` | Return normalized auth state | Open |
+| GET/POST | `/api/sessions` | Load or upsert authenticated drill sessions | Signed-in |
+| GET/PUT/DELETE | `/api/custom-list` | Load or replace the authenticated custom list | Signed-in |
+| GET/PUT | `/api/language` | Load or save language preference | Signed-in |
+| POST | `/api/import-demo-data` | Import guest browser data into authenticated account | Signed-in |
+| POST | `/api/plan-session` | Proxy to Python planner with rate limits | Open |
+| POST | `/api/generate-drills` | Proxy to Python generation with rate limits | Open |
+| POST | `/api/tutor` | Proxy to Python tutor (non-streaming) with rate limits | Open |
+| POST | `/api/tutor/stream` | Proxy to Python SSE tutor stream with rate limits | Open |
+| POST | `/api/study-assist` | Proxy to Python study-assist with rate limits | Open |
+| POST | `/api/ai-feedback` | Persist helpfulness feedback for a grounded reply | Signed-in |
+
+---
+
+## Data model
+
+```
+DrillSession       — user-scoped session performance (results JSON, drill type, language)
+CustomList         — one persisted custom list per user
+UserSettings       — language preference
+AiResponseFeedback — 👍/👎 signal linked to responseId and retrieval trace
+retrieval_doc      — pgvector document store for hybrid RAG (managed via psycopg2)
 ```
 
-## Iteration History
+Supabase owns identity. All app tables use the Supabase user UUID as `userId`.
 
-Note: the iteration history below includes earlier auth and Prisma-backed persistence work. The current public demo checkout ships with those pieces stubbed out so the app can run as a lightweight browser-first demo.
+The first version intentionally stored session results and custom-list items as JSON because that matched the frontend payloads and kept iteration fast. As planner logic, analytics, and review flows grew, that shape became harder to query, index, and evolve safely.
 
-### v1 — Timing + Feedback Loop First
-- **What changed:** Implemented the strict core loop (20s timer, submit/skip/timeout paths, immediate feedback, session scoring).
-- **Why:** Validate learning mechanics first before adding architecture or AI complexity.
-- **Impact:** Confirmed UX viability and exposed the next bottleneck: non-persistent local state.
+The next hardening step is to normalize per-item learning data into relational tables while keeping session-level aggregates in `DrillSession`. That preserves the current product behavior but gives the system a better story around query design, indexing, migrations, and backfills.
 
-### v2 — Data Contracts + Persistence Boundary
-- **What changed:** Added typed Next.js API routes plus Prisma models (`DrillSession`, `UserSettings`, `CustomList`).
-- **Why:** Decouple UI rendering from data logic and establish stable request/response contracts.
-- **Impact:** Deterministic persistence, cleaner component boundaries, and a foundation for multi-user flows.
+See:
+- [docs/CASE_STUDY_DATA_MODEL.md](docs/CASE_STUDY_DATA_MODEL.md) for the full current-vs-ideal schema walkthrough
+- [docs/ENGINEERING_NOTES.md](docs/ENGINEERING_NOTES.md) for recent engineering fixes
+- [docs/BACKLOG.md](docs/BACKLOG.md) for still-open hardening work
 
-### v3 — Isolated AI Service for Generation
-- **What changed:** Introduced a separate FastAPI generation service with guided/raw modes, JSON extraction, and output filtering.
-- **Why:** Keep AI failures isolated from the web app and make model/provider iteration easier.
-- **Impact:** Safer AI integration; malformed model output is filtered before entering user sessions.
+---
 
-### v4 — Tutor Control via LangGraph
-- **What changed:** Replaced one-shot tutoring with LangGraph routing (`hint`, `socratic`, `explain`, `clarify`, `ready_check`) and hint-level state.
-- **Why:** Make tutor behavior controllable and resilient under ambiguous learner messages.
-- **Impact:** More consistent coaching behavior through structured routing, JSON fallback, and safe defaults.
-
-### v5 — Reliability, Security, and Failure Handling
-- **What changed:** Added JWT cookie auth, protected data routes, turn caps, input validation, and clearer upstream error mapping.
-- **Why:** Reduce silent failure paths and harden multi-user behavior before broader usage.
-- **Impact:** More production-like reliability with clearer operational failure modes and stronger CI guarantees.
-
-### v6 — Streaming + Deployment Preparation (current)
-- **What changed:** Added `/tutor/stream` SSE, plus runtime metadata (`elapsed_ms`, `route`, `hint_level`) for observability.
-- **Why:** Improve perceived responsiveness and make runtime behavior measurable for tuning and ops.
-- **Impact:** End-to-end system is deployment-ready in architecture; once live, this phase will be labeled **Production Deployment**.
-
-## Product Features
-
-- **Core drills**: translation, substitution, transformation
-- **Languages**: Spanish, French, German, Chinese, Japanese, Korean, English
-- **User flows**:
-  - Run timed drills and receive immediate feedback
-  - Track performance on a per-browser dashboard
-  - Browse full drill library by language/topic/category
-  - Build a custom list by upload or AI generation
-- **Optional AI capabilities**:
-  - Generate custom drills via local Ollama model
-  - Ask AI tutor for hints, explanations, clarifications, and readiness checks
-
-## Tech Stack
+## Tech stack
 
 | Area | Technologies |
 |---|---|
 | Frontend | Next.js 16, React 19, Tailwind CSS 4 |
-| Backend (Web) | Next.js Route Handlers, TypeScript |
-| Backend (AI) | FastAPI, LangGraph, OpenAI / Anthropic / Google / Groq / Ollama support |
-| Data | Browser `localStorage` in the current demo; Prisma schema retained in repo as inactive reference |
-| Auth | Disabled in the current demo; demo session cookie is used only for AI rate limiting |
-| Testing | Vitest unit tests, route-level integration tests, and Playwright E2E coverage for the learner flow |
-| CI | GitHub Actions (`lint`, `tsc`, `test`, `build`, `test:e2e`, Python `py_compile`) |
+| Web backend | Next.js Route Handlers, TypeScript |
+| AI backend | FastAPI, LangGraph, LangChain |
+| LLM providers | OpenAI · Anthropic · Google · Groq · Ollama |
+| Retrieval | Hand-authored 31-note corpus, metadata scorer, pgvector hybrid |
+| Auth | Supabase Auth with SSR cookie handling |
+| Data | Supabase Postgres + Prisma (pooled + direct) |
+| Tracing | Langfuse (fail-open) |
+| Testing | Vitest (73 unit/integration), Pytest (110 agent), Playwright E2E |
+| CI | GitHub Actions: lint · tsc · vitest · build · playwright · pytest |
 
-## Runtime Profile
+---
 
-For local development and the public demo, LinguaFlow runs without database-backed auth or persistence. The web app stores learner state in the browser, and AI features are available when the optional Python agent is running.
-
-The intended future production profile is:
-- Next.js frontend/web API on Vercel
-- FastAPI agent on Render
-- Postgres via Prisma
-- Hosted LLM provider for reliable inference
-
-This keeps the demo lightweight while preserving a clear migration path to an internet-facing production architecture.
-
-## Model Strategy
-
-- **Default model profile**: `openai/gpt-4o-mini` is the baseline for tutor and generation requests because it is cost-efficient, low-latency, and strong enough for short coaching turns and drill JSON output.
-- **Provider abstraction by design**: model IDs use `provider/model` format, so the same request path can run on OpenAI, Anthropic, Google, Groq, or local Ollama without changing endpoint contracts.
-- **Structured outputs reduce hallucinations**: the tutor router attempts structured output first, then falls back to JSON parsing, improving route reliability for `hint`, `socratic`, `explain`, `clarify`, and `ready_check`.
-- **Deterministic parsing for generation**: drill generation enforces JSON-array extraction plus schema-like field filtering (`prompt`, `answer`, type constraints) before returning results.
-- **Multi-model ready for deployment tuning**: the architecture supports switching models per environment (cost, latency, quality) while keeping the frontend/API payload shape stable.
-
-## Evaluation
-
-Benchmark snapshot (local run, 2026-04-03, model: `openai/gpt-4o-mini`):
-
-- **Tutor routing validity**: 15/15 prompts returned a valid route (`hint`, `socratic`, `explain`, `clarify`, `ready_check`) via `/tutor/stream`.
-- **Average tutor latency**: 1.97s end-to-end over 15 streaming tutor requests.
-- **Generation validity after filtering**: 12/12 generation requests returned non-empty filtered drill sets with required `prompt` + `answer` fields.
-- **Average generation latency**: 6.63s over 12 guided generation requests (96 valid drills total).
-- **Safety behavior**: invalid/ambiguous outputs remain bounded by route fallbacks (`socratic` default), field filtering, and explicit 4xx/5xx error mapping.
-
-Method notes:
-- Tutor benchmark used one-turn coaching prompts and validated the final SSE `route` event.
-- Generation benchmark used guided mode across multiple topic/difficulty/grammar combinations.
-- These are lightweight operational checks (not a formal offline eval suite), intended to show real runtime behavior on the current stack.
-
-## Engineering Highlights
-
-### 1) Typed cross-service API bridge
-The Next.js API layer maps frontend camelCase payloads to Python snake_case contracts and maps responses back to frontend shape. This keeps the UI ergonomic without sacrificing strict backend contracts.
-
-### 2) LangGraph tutor orchestration
-The tutor service uses a router-plus-specialists graph:
-- router classifies learner intent (`hint`, `socratic`, `explain`, `clarify`, `ready_check`)
-- conditional edges dispatch to specialist nodes
-- each specialist applies route-specific prompting policy
-- guardrails enforce turn limits and stable fallback behavior
-
-### 3) Demo session and guardrails
-- The public demo does not require login; app routes are intentionally open
-- A lightweight demo session cookie scopes AI-facing rate limits per browser
-- AI routes use per-session, per-IP, and optional global daily caps to protect usage
-
-### 4) Reliability workflow
-- Unit tests for drill normalization, answer checking, item selection, and stat aggregation
-- Route-level integration tests for demo reset, drill generation proxying, and tutor proxying
-- Browser E2E coverage for the core learner flow from session start to results dashboard
-- CI pipeline validates code health before merge
-
-## Agent System Design
-
-The Python agent exposes two independent sub-systems on the same FastAPI service.
-
-### Drill Generation (single-pass)
-
-```mermaid
-flowchart TD
-  REQ[POST /generate\nGenerateRequest] --> MODE{mode?}
-  MODE -->|guided| BUILD[Build guided prompt\ntopic · difficulty · grammar · count]
-  MODE -->|raw| RAW[Use raw_prompt as-is]
-  BUILD --> LLM[Provider model\nsingle-pass inference]
-  RAW   --> LLM
-  LLM   --> EXTRACT[JSON extraction\nstrip fences · parse array]
-  EXTRACT --> FILTER[Filter valid drills\nprompt + answer required]
-  FILTER --> RES[GenerateResponse\ndrills · model · elapsed_ms]
-```
-
-### Tutor Endpoint (non-streaming `/tutor`)
-
-```mermaid
-flowchart TD
-  REQ2[POST /tutor\nTutorRequest] --> GUARD{Turn cap\nexceeded?}
-  GUARD -->|yes| EARLY[Early return\nNo model call]
-  GUARD -->|no| STATE[Build TutorState\ninvoke LangGraph]
-
-  STATE --> ROUTER[Router node\nIntent classification\nstructured output + JSON fallback]
-
-  ROUTER -->|hint| HINT[Hint node\nProgressive reveal]
-  ROUTER -->|socratic| SOC[Socratic node\nGuided question]
-  ROUTER -->|explain| EXP[Explain node\nGrammar/pattern focus]
-  ROUTER -->|clarify| CLA[Clarify node\nInstruction disambiguation]
-  ROUTER -->|ready_check| RDY[Ready-check node\nShort takeaway + continue]
-
-  HINT --> OUT[Build TutorResponse\nassistant_message · structured · elapsed_ms]
-  SOC  --> OUT
-  EXP  --> OUT
-  CLA  --> OUT
-  RDY  --> OUT
-```
-
-### Tutor Streaming Endpoint (`/tutor/stream`)
-
-```mermaid
-flowchart TD
-  SREQ[POST /tutor/stream\nTutorRequest] --> MODE{mode?}
-
-  MODE -->|feedback| FEED[stream_feedback\nsingle prompt stream]
-  FEED --> SSE1[SSE tokens\ndata: token]
-  SSE1 --> DONE1[done=true]
-
-  MODE -->|tutor| VALID{messages valid\nlast role=user?}
-  VALID -->|no| E1[SSE error event]
-  VALID -->|yes| CAP{turn cap\nexceeded?}
-  CAP -->|yes| CAPMSG[stream cap message]
-  CAPMSG --> DONE2[done=true]
-  CAP -->|no| R2[router_node\nnon-stream classification]
-  R2 --> SPEC["stream_specialist(route)\nchunked LLM output"]
-  SPEC --> SSE2[SSE tokens\ndata: token]
-  SSE2 --> META[done=true + route + hint_level]
-```
-
-**Key design decisions:**
-- **Guardrail before the graph** — turn cap is enforced in the endpoint, not inside a node, so the LLM is never called unnecessarily
-- **Router uses structured output with JSON fallback** — tolerates models that ignore tool-call format
-- **Specialist nodes share a single `_run_specialist` helper** — prompting policy is centralized; LangGraph conditional edges select the node
-- **`hint_level` increments only on the hint route** — other routes leave it unchanged, preserving progressive-reveal state across turns
-- **Streaming path reuses router + specialist policies** — `/tutor/stream` keeps routing behavior aligned while delivering incremental SSE tokens
-
-## API Surface (Web Layer)
-
-| Method | Path | Purpose | Auth |
-|---|---|---|---|
-| POST | `/api/register` | Demo stub retained for compatibility | No-op in demo |
-| POST | `/api/auth/login` | Demo stub retained for compatibility | No-op in demo |
-| POST | `/api/auth/logout` | Demo stub retained for compatibility | No-op in demo |
-| GET | `/api/auth/me` | Demo stub retained for compatibility | No-op in demo |
-| GET/POST | `/api/sessions` | Demo stub; client state lives in `localStorage` | Not used by current UI |
-| GET/PUT | `/api/custom-list` | Demo stub; client state lives in `localStorage` | Not used by current UI |
-| GET/PUT | `/api/language` | Demo stub; client state lives in `localStorage` | Not used by current UI |
-| POST | `/api/generate-drills` | Proxy to Python generation endpoint with demo rate limits | Open |
-| POST | `/api/tutor` | Proxy to Python tutor endpoint with demo rate limits | Open |
-| POST | `/api/tutor/stream` | Proxy to Python SSE tutor stream endpoint with demo rate limits | Open |
-
-## Data Model
-
-The repo still contains a Prisma schema from an earlier iteration. It includes:
-- `User` (identity + credentials)
-- `DrillSession` (session performance + serialized results)
-- `CustomList` (user-generated drill sets)
-- `UserSettings` (preferences such as language)
-
-That schema is currently inactive in the public demo build. Today, learner state is stored in browser `localStorage`; re-enabling Prisma remains a future migration path.
-
-## Local Development
+## Local development
 
 ### Prerequisites
-- Node.js 20+
-- pnpm
-- Python 3.10+ (only if running the AI agent)
-- Ollama (only if using AI generation/tutor)
 
-### 1) Install and run the web app
+- Node.js 20+, pnpm
+- Python 3.11+
+- A Supabase project (optional — guest mode works without it)
+- An LLM provider key (e.g. `OPENAI_API_KEY`) for the agent
+
+### 1. Web app (guest mode)
 
 ```bash
-cd linguaflow-demo
 pnpm install
 pnpm dev
 ```
 
-Open `http://localhost:3000`.
+Open `http://localhost:3000`. Guest mode works immediately — no database or auth setup required.
 
-The current demo web app does not require a database or login setup.
+### 2. Authenticated mode
 
-### 2) Run optional AI agent
-
-Terminal A:
+Create a Supabase project, disable email confirmation, and add to `.env.local`:
 
 ```bash
-ollama serve
-ollama pull llama3.1
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+DATABASE_URL=...       # pooled connection string
+DIRECT_URL=...         # direct connection string
 ```
 
-Terminal B:
+Run migrations:
 
 ```bash
-cd linguaflow-demo/agent
-python -m venv .venv
-source .venv/bin/activate
+npx prisma migrate deploy
+```
+
+### 3. Python agent
+
+```bash
+cd agent
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+cp .env.example .env        # add OPENAI_API_KEY (or another provider key)
+uvicorn main:app --port 8000 --reload
 ```
 
-Health check:
+Health check: `curl http://localhost:8000/health`
+
+### 4. (Optional) Hybrid RAG with pgvector
 
 ```bash
-curl http://localhost:8000/health
+# Sync corpus embeddings to the database
+cd agent
+DATABASE_URL=... OPENAI_API_KEY=... python -m retrieval.sync_embeddings
 ```
 
-## Environment Variables
+The agent falls back to metadata-only retrieval if this step is skipped.
 
-Create `.env.local` from `.env.example`.
+---
 
-| Variable | Required | Description |
-|---|---|---|
-| `AGENT_URL` | No | Python agent base URL (default `http://localhost:8000`) |
-| `DEMO_AI_*` / `DEMO_GEN_*` / `DEMO_TUTOR_*` | No | Optional demo rate-limit overrides for AI endpoints |
-| `DATABASE_URL` | No | Reserved for inactive Prisma scaffolding in this checkout |
-| `JWT_SECRET` | No | Reserved for inactive auth scaffolding in this checkout |
+## Environment variables
+
+See `.env.example` (web) and `agent/.env.example` (agent) for the full list with descriptions.
+
+**Web app minimum (authenticated mode):**
+
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase anon key |
+| `DATABASE_URL` | Pooled Postgres URL |
+| `DIRECT_URL` | Direct Postgres URL (Prisma CLI) |
+| `AGENT_URL` | Python agent base URL |
+
+**Agent minimum:**
+
+| Variable | Description |
+|---|---|
+| `OPENAI_API_KEY` | LLM key for default model |
+
+---
 
 ## Scripts
 
 | Command | Purpose |
 |---|---|
 | `pnpm dev` | Start dev server |
-| `pnpm build` | Build production bundle |
-| `pnpm start` | Start production server |
-| `pnpm lint` | Run ESLint |
-| `pnpm test` | Run Vitest suite |
-| `pnpm test:e2e` | Run Playwright end-to-end coverage for the learner flow |
-| `pnpm test:watch` | Run tests in watch mode |
-| `pnpm demo:gif` | Re-record the demo GIF to `docs/demo/linguaflow-demo.gif` |
+| `pnpm build` | Production bundle |
+| `pnpm test` | Vitest unit/integration suite |
+| `pnpm test:e2e` | Playwright E2E (guest mode; authenticated skips without env vars) |
+| `npx tsx scripts/seed-demo-account.ts <userId>` | Seed or reset the reviewer demo account |
+| `npx tsx scripts/feedback-report.ts` | Print helpfulness rates by surface, mode, source note |
+| `python -m pytest tests/ -q` | Full agent test suite (110 tests, mocked externals) |
+| `python -m retrieval.sync_embeddings` | Sync corpus embeddings to pgvector |
+| `python -m retrieval.eval_runner` | Run retrieval eval harness |
+| `python -m retrieval.eval_runner --arm freeform` | Freeform eval + metadata-vs-hybrid comparison |
 
-## Quality and CI
+---
 
-- Test files currently live in `lib/*.test.ts`, `app/api/**/*.test.ts`, and `e2e/*.spec.ts`
-- CI workflow in `.github/workflows/ci.yml` runs:
-  - `pnpm lint`
-  - `npx tsc --noEmit`
-  - `pnpm test`
-  - `pnpm build`
-  - `pnpm test:e2e`
-  - Python syntax checks for all agent modules
+## CI
 
-## Production Notes
+CI runs on every push and PR (`/.github/workflows/ci.yml`):
 
-- If auth is re-enabled, rotate `JWT_SECRET` carefully and serve over HTTPS
-- Add stronger auth and abuse controls around AI-heavy routes for internet-facing deployments
-- Re-enable server-backed persistence before treating learner history as durable data
-- For multi-instance deployments, migrate the dormant Prisma layer to Postgres
+| Step | What it checks |
+|---|---|
+| `pnpm lint` | ESLint |
+| `npx tsc --noEmit` | TypeScript |
+| `pnpm test` | Vitest (73 tests) |
+| `pnpm build` | Next.js production build |
+| `pnpm test:e2e` | Playwright (guest flow; authenticated flow skips without env vars) |
+| `pytest tests/ -q` | Full Python agent suite (110 tests, all mocked) |
 
-## Current Limitations
+---
 
-- AI features depend on local Ollama availability unless replaced with hosted inference
-- Auth and Prisma-backed persistence are disabled in the current public demo checkout
-- Learner progress is per-browser and can be cleared with local storage reset
-- Tutor/generation endpoints currently prioritize demo ergonomics over hardened production policy
+## Deployment
 
-## Roadmap
+See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for the full runbook covering:
+- Supabase setup and migration order
+- Render agent deploy
+- Vercel web app deploy
+- Embedding sync
+- Reviewer account seeding and reset
 
-- Add end-to-end tests for critical user flows
-- Add observability (request tracing and endpoint latency dashboards)
-- Add model routing/fallback policies for AI endpoints
-- Re-enable database-backed auth and persistence on top of the retained Prisma schema
-- Publish demo deployment and walkthrough video
+---
+
+## Engineering highlights
+
+### 1. Typed cross-service bridge
+
+The Next.js API layer maps camelCase frontend payloads to Python snake_case contracts and maps responses back. This keeps the UI ergonomic without sacrificing strict backend contracts.
+
+### 2. LangGraph tutor with retrieval-grounded nodes
+
+The tutor graph routes each learner message to a specialist node. Only `explain` and `clarify` run retrieval — `hint`, `ready_check`, and `socratic` never touch the corpus, preventing answer leakage and keeping grading deterministic.
+
+### 3. Metadata-first RAG with hybrid fallback
+
+The retriever scores notes by metadata overlap first. If the top score exceeds a threshold, the vector path is skipped entirely (faster + no embedding cost for known items). Hybrid reranking only kicks in for novel items where metadata is weak.
+
+### 4. End-to-end response_id linkage
+
+`crypto.randomUUID()` is generated in the Next.js proxy, forwarded as `request_id` to Python, echoed back as `response_id` in the response body and in the SSE `done` event, and persisted as `responseId` in `AiResponseFeedback`. This makes every feedback row joinable to its Langfuse trace without any out-of-band correlation step.
+
+### 5. Fail-open everywhere
+
+DB unavailable → metadata-only retrieval. Embedding API down → metadata-only retrieval. Langfuse credentials unset → no tracing, behavior unchanged. LLM planner below confidence threshold → deterministic heuristic. The system has no hard dependencies on optional infrastructure.
+
+---
 
 ## License
 

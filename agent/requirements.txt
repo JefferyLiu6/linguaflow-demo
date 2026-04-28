@@ -11,3 +11,13 @@ langchain-openai>=0.2
 langchain-anthropic>=0.3
 langchain-google-genai>=2.0
 langchain-groq>=0.2
+
+# Tracing for the planner (fail-open at runtime if missing or misconfigured)
+langfuse>=2.0
+
+# Phase 3: hybrid retrieval
+# psycopg2-binary: direct Postgres access for pgvector queries (Prisma doesn't support vector columns)
+# openai: standalone SDK for embedding generation in the offline sync command
+psycopg2-binary>=2.9
+openai>=1.0
+

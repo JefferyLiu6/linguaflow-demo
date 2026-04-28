@@ -1,17 +1,23 @@
-import { type NextRequest, NextResponse } from 'next/server'
-import { createDemoSession } from '@/lib/demoSession'
+import { type NextRequest } from 'next/server'
+import { getOrCreateDemoSession } from '@/lib/demoSession'
+import { updateSession } from '@/lib/supabase/proxy'
 
-// Demo mode — all routes are publicly accessible, no auth required
-export function proxy(request: NextRequest) {
-  const response = NextResponse.next()
+export async function proxy(request: NextRequest) {
+  const { response, user } = await updateSession(request)
 
-  // Only rotate the demo cookie for top-level document requests.
   if (request.headers.get('sec-fetch-dest') !== 'document') {
     return response
   }
 
-  const { setCookieHeader } = createDemoSession()
-  response.headers.append('Set-Cookie', setCookieHeader)
+  if (user) {
+    return response
+  }
+
+  const { setCookieHeader } = getOrCreateDemoSession(request)
+  if (setCookieHeader) {
+    response.headers.append('Set-Cookie', setCookieHeader)
+  }
+
   return response
 }
 
@@ -22,5 +28,6 @@ export const config = {
     '/dashboard/:path*',
     '/library/:path*',
     '/study/:path*',
+    '/login',
   ],
 }

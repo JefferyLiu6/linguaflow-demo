@@ -58,3 +58,6 @@ agent/.venv/
 agent/__pycache__/
 **/__pycache__/
 *.py[cod]
+
+# Claude Code
+.claude/

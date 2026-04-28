@@ -30,8 +30,8 @@
   --card-foreground:      var(--text-1);
   --popover:              var(--surface-2);
   --popover-foreground:   var(--text-1);
-  --primary:              var(--text-1);
-  --primary-foreground:   var(--bg);
+  --primary:              #1F5C3A;
+  --primary-foreground:   #ffffff;
   --secondary:            var(--surface-2);
   --secondary-foreground: var(--text-1);
   --muted:                var(--surface-2);
@@ -42,7 +42,7 @@
   --border:               rgba(0,0,0,0.08);
   --input:                rgba(0,0,0,0.07);
   --ring:                 rgba(0,0,0,0.20);
-  --radius:               4px;
+  --radius:               8px;
 }
 
 @theme inline {
@@ -60,10 +60,10 @@
   --font-sans:                var(--font-manrope);    /* Inter */
   --font-mono:                var(--font-jetbrains);  /* JetBrains Mono */
   --font-display:             var(--font-fraunces);   /* Space Grotesk */
-  --radius-sm:                2px;
-  --radius-md:                4px;
-  --radius-lg:                6px;
-  --radius-xl:                8px;
+  --radius-sm:                4px;
+  --radius-md:                8px;
+  --radius-lg:                12px;
+  --radius-xl:                20px;
 }
 
 @layer base {
@@ -80,6 +80,34 @@
 /* ── Typography utilities ────────────────────────────────────── */
 .font-display { font-family: var(--font-fraunces), sans-serif; }
 .font-mono    { font-family: var(--font-jetbrains), 'Courier New', monospace; }
+
+/* ── Primary button / link ───────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #1F5C3A;
+  color: #ffffff;
+  font-family: var(--font-manrope), 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 13px 28px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 2px 10px rgba(31, 92, 58, 0.3);
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 0;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+.btn-primary:hover:not(:disabled) { background: #2E7D52; }
+.btn-primary:disabled {
+  background: var(--surface-2);
+  color: var(--text-3);
+  cursor: not-allowed;
+  box-shadow: none;
+}
 
 /* ── Timer bar ───────────────────────────────────────────────── */
 .timer-drain {

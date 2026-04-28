@@ -1,0 +1,9 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="28" fill="#1F5C3A"/>
+  <!-- Didot-style L scaled to 128×128 -->
+  <path d="M 32 36 L 52 36 L 52 84 L 95 84 L 95 98 L 32 98 Z" fill="white"/>
+  <!-- Top cap serif -->
+  <rect x="25" y="27" width="32" height="9" rx="3.5" fill="white"/>
+  <!-- Bottom-right serif nub -->
+  <rect x="84" y="98" width="16" height="6" rx="2.5" fill="white"/>
+</svg>

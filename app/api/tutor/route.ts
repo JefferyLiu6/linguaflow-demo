@@ -1,66 +1,22 @@
 import { NextResponse } from 'next/server'
-import { checkRateLimit, getIp, tooManyRequests } from '@/lib/rateLimit'
-import { getOrCreateDemoSession } from '@/lib/demoSession'
-import { RATE_LIMIT } from '@/lib/rateLimitConfig'
-import { checkGlobalDailyAiLimit } from '@/lib/globalRateLimit'
+import { applyRequestActorResponseHeaders, enforceAiRateLimit } from '@/lib/aiRateLimit'
 
 const AGENT_URL = process.env.AGENT_URL ?? 'http://localhost:8000'
 
 export async function POST(req: Request) {
-  const { sessionId, setCookieHeader } = getOrCreateDemoSession(req)
-  const ip = getIp(req)
-  const rlSessionMinute = checkRateLimit(
-    `tutor:s:m:${sessionId}`,
-    RATE_LIMIT.ai.tutor.sessionMinute,
-    RATE_LIMIT.windows.minuteMs,
-  )
-  if (!rlSessionMinute.ok) {
-    const res = tooManyRequests(rlSessionMinute.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
+  const actor = await enforceAiRateLimit(req, 'tutor')
+  if (actor instanceof Response) {
+    return actor
   }
-  const rlSessionDaily = checkRateLimit(
-    `ai:s:d:${sessionId}`,
-    RATE_LIMIT.ai.tutor.sessionDaily,
-    RATE_LIMIT.windows.dayMs,
-  )
-  if (!rlSessionDaily.ok) {
-    const res = tooManyRequests(rlSessionDaily.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
-  }
-  const rlIpMinute = checkRateLimit(
-    `tutor:ip:m:${ip}`,
-    RATE_LIMIT.ai.tutor.ipMinute,
-    RATE_LIMIT.windows.minuteMs,
-  )
-  if (!rlIpMinute.ok) {
-    const res = tooManyRequests(rlIpMinute.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
-  }
-  const rlIpDaily = checkRateLimit(
-    `ai:ip:d:${ip}`,
-    RATE_LIMIT.ai.tutor.ipDaily,
-    RATE_LIMIT.windows.dayMs,
-  )
-  if (!rlIpDaily.ok) {
-    const res = tooManyRequests(rlIpDaily.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
-  }
-  // Global daily cap across all users and regions (single-instance scope).
-  const rlGlobalDaily = await checkGlobalDailyAiLimit()
-  if (!rlGlobalDaily.ok) {
-    const res = tooManyRequests(rlGlobalDaily.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
-  }
+
+  const respond = (response: Response) =>
+    applyRequestActorResponseHeaders(response, actor)
+
   let body: Record<string, unknown>
   try {
     body = await req.json()
   } catch {
-    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
+    return respond(NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 }))
   }
 
   // Validate required fields
@@ -68,18 +24,24 @@ export async function POST(req: Request) {
   const messages    = body.messages    as unknown[] | undefined
 
   if (!currentItem) {
-    return NextResponse.json({ error: 'currentItem is required' }, { status: 400 })
+    return respond(NextResponse.json({ error: 'currentItem is required' }, { status: 400 }))
   }
   if (!Array.isArray(messages) || messages.length === 0) {
-    return NextResponse.json({ error: 'messages must be a non-empty array' }, { status: 400 })
+    return respond(
+      NextResponse.json({ error: 'messages must be a non-empty array' }, { status: 400 }),
+    )
   }
 
   const sessionContext = (body.sessionContext as Record<string, unknown>) ?? {}
   const constraints    = (body.constraints   as Record<string, unknown>) ?? {}
 
+  // Generate a stable response ID for feedback linkage
+  const requestId = crypto.randomUUID()
+
   // Map camelCase (frontend) → snake_case (Python agent)
   const payload = {
     model: body.model ?? 'openai/gpt-4o-mini',
+    request_id: requestId,
     session_context: {
       language:    sessionContext.language    ?? 'Spanish',
       drill_type:  sessionContext.drillType   ?? 'translation',
@@ -87,6 +49,9 @@ export async function POST(req: Request) {
       items_total: sessionContext.itemsTotal  ?? 1,
     },
     current_item: {
+      id:              currentItem.id              ?? '',
+      category:        currentItem.category        ?? null,
+      topic:           currentItem.topic           ?? null,
       instruction:     currentItem.instruction     ?? '',
       prompt:          currentItem.prompt          ?? '',
       type:            currentItem.type            ?? 'translation',
@@ -123,9 +88,11 @@ export async function POST(req: Request) {
     const data = await agentRes.json()
 
     if (!agentRes.ok) {
-      return NextResponse.json(
-        { error: data.detail ?? 'Agent error' },
-        { status: agentRes.status },
+      return respond(
+        NextResponse.json(
+          { error: data.detail ?? 'Agent error' },
+          { status: agentRes.status },
+        ),
       )
     }
 
@@ -135,30 +102,38 @@ export async function POST(req: Request) {
           hintLevel:       data.structured.hint_level       ?? null,
           suggestedPhrase: data.structured.suggested_phrase ?? null,
           learnerReady:    data.structured.learner_ready    ?? null,
+          retrievalHit:    data.structured.retrieval_hit    ?? null,
+          retrievedSources: Array.isArray(data.structured.retrieved_sources)
+            ? data.structured.retrieved_sources.map((source: Record<string, unknown>) => ({
+                id: typeof source.id === 'string' ? source.id : '',
+                title: typeof source.title === 'string' ? source.title : '',
+              }))
+            : null,
         }
       : null
 
-    const res = NextResponse.json({
-      assistantMessage: data.assistant_message,
-      structured,
-      model:     data.model,
-      elapsedMs: data.elapsed_ms,
-    })
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
+    return respond(
+      NextResponse.json({
+        assistantMessage: data.assistant_message,
+        structured,
+        model: data.model,
+        elapsedMs: data.elapsed_ms,
+        responseId: data.response_id ?? null,
+      }),
+    )
   } catch (err) {
     const msg      = err instanceof Error ? err.message : String(err)
     const isDown   = msg.includes('ECONNREFUSED') || msg.includes('fetch failed')
                   || msg.includes('timeout')       || msg.includes('TimeoutError')
-    const res = NextResponse.json(
-      {
-        error: isDown
-          ? 'Python agent is not running or timed out — start it with: cd agent && uvicorn main:app --port 8000 --reload'
-          : `Tutor error: ${msg}`,
-      },
-      { status: 502 },
+    return respond(
+      NextResponse.json(
+        {
+          error: isDown
+            ? 'Python agent is not running or timed out — start it with: cd agent && uvicorn main:app --port 8000 --reload'
+            : `Tutor error: ${msg}`,
+        },
+        { status: 502 },
+      ),
     )
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
   }
 }

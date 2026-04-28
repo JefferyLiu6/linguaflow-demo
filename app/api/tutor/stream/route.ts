@@ -1,65 +1,21 @@
-import { checkRateLimit, getIp, tooManyRequests } from '@/lib/rateLimit'
-import { getOrCreateDemoSession } from '@/lib/demoSession'
-import { RATE_LIMIT } from '@/lib/rateLimitConfig'
-import { checkGlobalDailyAiLimit } from '@/lib/globalRateLimit'
+import { applyRequestActorResponseHeaders, enforceAiRateLimit } from '@/lib/aiRateLimit'
 
 const AGENT_URL = process.env.AGENT_URL ?? 'http://localhost:8000'
 
 export async function POST(req: Request) {
-  const { sessionId, setCookieHeader } = getOrCreateDemoSession(req)
-  const ip = getIp(req)
-  const rlSessionMinute = checkRateLimit(
-    `tutor:s:m:${sessionId}`,
-    RATE_LIMIT.ai.tutor.sessionMinute,
-    RATE_LIMIT.windows.minuteMs,
-  )
-  if (!rlSessionMinute.ok) {
-    const res = tooManyRequests(rlSessionMinute.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
+  const actor = await enforceAiRateLimit(req, 'tutor')
+  if (actor instanceof Response) {
+    return actor
   }
-  const rlSessionDaily = checkRateLimit(
-    `ai:s:d:${sessionId}`,
-    RATE_LIMIT.ai.tutor.sessionDaily,
-    RATE_LIMIT.windows.dayMs,
-  )
-  if (!rlSessionDaily.ok) {
-    const res = tooManyRequests(rlSessionDaily.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
-  }
-  const rlIpMinute = checkRateLimit(
-    `tutor:ip:m:${ip}`,
-    RATE_LIMIT.ai.tutor.ipMinute,
-    RATE_LIMIT.windows.minuteMs,
-  )
-  if (!rlIpMinute.ok) {
-    const res = tooManyRequests(rlIpMinute.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
-  }
-  const rlIpDaily = checkRateLimit(
-    `ai:ip:d:${ip}`,
-    RATE_LIMIT.ai.tutor.ipDaily,
-    RATE_LIMIT.windows.dayMs,
-  )
-  if (!rlIpDaily.ok) {
-    const res = tooManyRequests(rlIpDaily.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
-  }
-  // Global daily cap across all users and regions (single-instance scope).
-  const rlGlobalDaily = await checkGlobalDailyAiLimit()
-  if (!rlGlobalDaily.ok) {
-    const res = tooManyRequests(rlGlobalDaily.retryAfter)
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
-  }
+
+  const respond = (response: Response) =>
+    applyRequestActorResponseHeaders(response, actor)
+
   let body: Record<string, unknown>
   try {
     body = await req.json()
   } catch {
-    return new Response('Invalid JSON', { status: 400 })
+    return respond(new Response('Invalid JSON', { status: 400 }))
   }
 
   const currentItem    = body.currentItem    as Record<string, unknown> | undefined
@@ -68,12 +24,16 @@ export async function POST(req: Request) {
   const messages       = (body.messages      as { role: string; content: string }[]) ?? []
 
   if (!currentItem) {
-    return new Response('currentItem is required', { status: 400 })
+    return respond(new Response('currentItem is required', { status: 400 }))
   }
+
+  // Generate a stable response ID that Python will echo in the SSE done event
+  const requestId = crypto.randomUUID()
 
   const payload = {
     mode:  body.mode ?? 'tutor',
     model: body.model ?? 'openai/gpt-4o-mini',
+    request_id: requestId,
     session_context: {
       language:    sessionContext.language   ?? 'Spanish',
       drill_type:  sessionContext.drillType  ?? 'translation',
@@ -81,6 +41,9 @@ export async function POST(req: Request) {
       items_total: sessionContext.itemsTotal ?? 1,
     },
     current_item: {
+      id:              currentItem.id              ?? '',
+      category:        currentItem.category        ?? null,
+      topic:           currentItem.topic           ?? null,
       instruction:     currentItem.instruction     ?? '',
       prompt:          currentItem.prompt          ?? '',
       type:            currentItem.type            ?? 'translation',
@@ -111,25 +74,25 @@ export async function POST(req: Request) {
     })
 
     if (!agentRes.ok || !agentRes.body) {
-      return new Response(`Agent error: ${agentRes.status}`, { status: agentRes.status })
+      return respond(new Response(`Agent error: ${agentRes.status}`, { status: agentRes.status }))
     }
 
-    const res = new Response(agentRes.body, {
-      headers: {
-        'Content-Type':  'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection':    'keep-alive',
-      },
-    })
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
+    return respond(
+      new Response(agentRes.body, {
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive',
+        },
+      }),
+    )
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
-    const res = new Response(
-      `data: ${JSON.stringify({ error: `Agent unavailable: ${msg}` })}\n\n`,
-      { status: 502, headers: { 'Content-Type': 'text/event-stream' } },
+    return respond(
+      new Response(
+        `data: ${JSON.stringify({ error: `Agent unavailable: ${msg}` })}\n\n`,
+        { status: 502, headers: { 'Content-Type': 'text/event-stream' } },
+      ),
     )
-    if (setCookieHeader) res.headers.append('Set-Cookie', setCookieHeader)
-    return res
   }
 }
