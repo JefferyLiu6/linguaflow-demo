@@ -29,7 +29,7 @@ test.describe('learner flow', () => {
     expect(initialDemoCookie).toBeTruthy()
 
     await page.locator('main').getByRole('link', { name: 'Begin Training' }).first().click()
-    await expect(page.getByRole('heading', { name: 'New Session' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /begin training/i })).toBeVisible()
 
     await page.getByRole('button', { name: 'Select Phrase mode' }).click()
 
