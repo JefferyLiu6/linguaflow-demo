@@ -35,7 +35,8 @@ jobs:
       - name: Build
         run: pnpm build
         env:
-          DATABASE_URL: file:./prisma/test.db
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ci
+          DIRECT_URL: postgresql://postgres:postgres@localhost:5432/ci
           JWT_SECRET: ci-secret-not-used-in-production
 
       - name: Install Playwright browser
