@@ -178,7 +178,7 @@ def test_tutor_endpoint_response_id_is_null_when_not_provided():
 
 
 def test_study_assist_endpoint_echoes_request_id():
-    with patch("providers.get_llm") as mock_get_llm, \
+    with patch("study_assist.router.get_llm") as mock_get_llm, \
          patch("retrieval.retrieve.retrieve_contrast_note") as mock_retrieve:
         mock_get_llm.return_value = _mock_llm_response("Explanation here.")
         mock_retrieve.return_value = {
